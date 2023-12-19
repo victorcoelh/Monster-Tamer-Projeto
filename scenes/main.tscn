@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bxrvjw02uooh6"]
+[gd_scene load_steps=6 format=3 uid="uid://bxrvjw02uooh6"]
 
 [ext_resource type="Texture2D" uid="uid://d0ykp1tq5smde" path="res://graphics/tilesets/TX Tileset Grass.png" id="1_1hypd"]
+[ext_resource type="PackedScene" uid="uid://cbllbd0aj3dpc" path="res://scenes/Unit.tscn" id="2_3lker"]
 [ext_resource type="Script" path="res://scripts/grid.gd" id="2_848uk"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_u1it4"]
@@ -275,3 +276,5 @@ layer_0/tile_data = PackedInt32Array(0, 0, 0, 65536, 0, 1, 131072, 0, 2, 196608,
 
 [node name="Grid" type="Node2D" parent="."]
 script = ExtResource("2_848uk")
+
+[node name="PlayerUnit" parent="." instance=ExtResource("2_3lker")]
