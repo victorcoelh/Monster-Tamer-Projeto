@@ -280,4 +280,3 @@ script = ExtResource("2_848uk")
 [node name="Player" parent="." instance=ExtResource("2_3lker")]
 
 [node name="Enemy" parent="." instance=ExtResource("2_3lker")]
-modulate = Color(1, 0, 0, 1)
