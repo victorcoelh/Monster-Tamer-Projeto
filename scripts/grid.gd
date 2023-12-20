@@ -5,6 +5,9 @@ extends Node2D
 
 @onready var astar_grid: AStarGrid2D
 
+@onready var label = $"../Label"
+
+
 var grid = []
 var initial_position = null
 var final_position = null
@@ -12,16 +15,20 @@ var selected_unit
 var path
 var moving = false
 
-@onready var player = $"../PlayerUnit"
+@onready var player = $"../Player"
+@onready var enemy = $"../Enemy"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	initialize_grid()
 	add_to_grid(player, Vector2(2,2))
+	add_to_grid(enemy, Vector2(2,3))
 	
 func _process(_delta):
 	check_mouse()
 	queue_redraw()
+	
+	
 	
 func _draw():
 	for i in range(grid.size()):
@@ -46,8 +53,11 @@ func initialize_grid():
 func check_mouse():
 	if Input.is_action_just_released("Select"):		
 		select_unit()
+		
+	if Input.is_action_just_released("Attack"):
+		player.attack_action()
 
-func select_unit():
+func select_unit():	
 	if initial_position == null:
 		initial_position = selected_cell_position()
 		selected_unit = selected_cell()
@@ -61,7 +71,7 @@ func select_unit():
 				
 	if selected_unit == null:
 		initial_position = null	
-	
+		
 func add_to_grid(object, relative_pos: Vector2):
 	grid[relative_pos.x][relative_pos.y] = object
 	
@@ -73,6 +83,11 @@ func get_cell_position(relative_position: Vector2):
 	var x = relative_position.x * cell_size.x + cell_size.x/2
 	var y = relative_position.y * cell_size.y + cell_size.y/2
 	return Vector2(x, y)
+
+func get_local_position(global_position: Vector2):
+	var x = floor(global_position.x / cell_size.x)
+	var y = floor(global_position.y / cell_size.y)
+	return Vector2(x,y)
 	
 func move(object: Node2D, initial_pos: Vector2, final_pos: Vector2):
 	if final_pos != initial_pos:
