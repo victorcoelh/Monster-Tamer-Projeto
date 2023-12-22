@@ -59,8 +59,9 @@ func get_movement_path(initial_pos, final_pos):
 	return path
 
 func grid_move(initial_pos, final_pos):
-	grid[final_pos.x][final_pos.y] = grid[initial_pos.x][initial_pos.y]
-	grid[initial_pos.x][initial_pos.y] = null
+	if initial_pos != final_pos:
+		grid[final_pos.x][final_pos.y] = grid[initial_pos.x][initial_pos.y]
+		grid[initial_pos.x][initial_pos.y] = null
 
 func setup_astar():
 	astar_grid = AStarGrid2D.new()

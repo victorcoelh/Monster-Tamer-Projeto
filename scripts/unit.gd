@@ -10,10 +10,6 @@ var current_path = []
 @onready var grid = $"../Grid"
 
 
-func _ready():
-	pass
-
-
 func _process(_delta):
 	if current_path.is_empty():
 		return
@@ -25,31 +21,11 @@ func _process(_delta):
 		current_path.pop_front()
 		print(current_path)
 
+func basic_attack(enemy: BaseUnit):
+	enemy.hp -= attack
+	print(str(enemy.hp) + "/" + str(enemy.max_hp))
+	
+	return
+
 func follow_path(path):
 	current_path = path
-
-#region Attack
-func attack_action():
-	var enemy_position: Vector2 = grid.selected_cell_position()
-	var entity_position: Vector2 = grid.get_local_position(global_position)
-	var enemy = grid.grid[enemy_position.x][enemy_position.y]
-	
-	if can_attack(entity_position, enemy_position):
-		print("Attack!")
-		
-		enemy.hp -= attack
-		print(str(enemy.hp) + "/" + str(enemy.max_hp))
-		
-		return
-		
-	print("You can't attack")
-
-func can_attack(entity_pos: Vector2, enemy_position: Vector2) -> bool:
-	var enemy = grid.grid[enemy_position.x][enemy_position.y]
-	
-	if enemy is Node2D and enemy.is_in_group("Unit"):
-		return entity_pos.distance_to(enemy_position) == 1
-		
-	return false
-#endregion
-	

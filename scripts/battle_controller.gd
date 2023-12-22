@@ -13,30 +13,38 @@ func _process(_delta):
 
 func check_mouse():
 	if Input.is_action_just_released("Select"):
-		get_unit_at_mouse_position()
-		
+		if current_unit == null:
+			get_unit_at_mouse_position()
+			return
+		else:
+			var selected_position = get_unit_at_mouse_position()
+			var path = grid.get_movement_path(current_position, selected_position)
+			grid.grid_move(current_position, selected_position)
+			current_unit.follow_path(path)
+			current_unit = null
+	
 	if Input.is_action_just_released("Attack"):
 		if current_unit != null:
-			resolve_attack()
+			print("Attack!")
+			var target_position = get_unit_at_mouse_position()
+			resolve_attack(current_unit.basic_attack, target_position)
 
 func get_unit_at_mouse_position():
 	var selected_position = get_cell_at_mouse_position()
 	var selected_unit = grid.grid[selected_position.x][selected_position.y]
 	
 	if selected_unit is BaseUnit and current_unit == null:
-		print("Selected unit")
+		print("Selected Unit")
 		current_position = selected_position
 		current_unit = selected_unit
-		return
 	
-	if current_unit != null:
-		var path = grid.get_movement_path(current_position, selected_position)
-		grid.grid_move(current_position, selected_position)
-		current_unit.follow_path(path)
-		current_unit = null
+	return selected_position
 
-func resolve_attack():
-	pass
+func resolve_attack(attack: Callable, target_position: Vector2):
+	var target_unit = grid.grid[target_position.x][target_position.y]
+	
+	if target_unit is BaseUnit:
+		attack.call(target_unit)
 
 func get_cell_at_mouse_position() -> Vector2:
 	var mouse_pos = get_global_mouse_position()
