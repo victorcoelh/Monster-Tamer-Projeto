@@ -1,5 +1,9 @@
 class_name BaseUnit
 extends Node2D
+## Class to implement basic unit behavior, which should be shared between all
+## units, including all player, enemy and ally units.
+##
+## Custom behavior should be implemented in the inheriting classes.
 
 
 @export var max_hp := 10
@@ -7,7 +11,7 @@ var hp := 10
 var attack := 2
 var current_path = []
 
-@onready var grid = $"../Grid"
+@onready var grid = $"../../BattleLogic/Grid"
 
 
 func _process(_delta):
@@ -27,5 +31,5 @@ func basic_attack(enemy: BaseUnit):
 	
 	return
 
-func follow_path(path):
+func follow_path(path: Array[Vector2i]):
 	current_path = path

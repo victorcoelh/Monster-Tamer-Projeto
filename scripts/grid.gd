@@ -1,4 +1,6 @@
 extends Node2D
+## A class for creating and managing the combat system's grid layout.
+
 
 @export var size := Vector2(20, 20)
 @export var cell_size := Vector2(32, 32)
@@ -11,19 +13,21 @@ var selected_unit
 var path: Array[Vector2i]
 var moving = false
 
-@onready var player = $"../PlayerUnit"
-@onready var enemy = $"../EnemyUnit"
-@onready var base_tile_map = $"../BaseTileMap"
+@onready var units = $"../../Units"
+@onready var base_tile_map = $"../../BaseTileMap"
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready():
 	initialize_grid()
 	setup_astar()
 	
 	var objects: Array[Vector2i] = base_tile_map.get_obstacles()
 	add_objects_to_grid(objects, false)
-	add_to_grid(player, Vector2(2,2))
-	add_to_grid(enemy, Vector2(2,3))
+	
+	var i = 0
+	for unit in units.get_children():
+		add_to_grid(unit, Vector2i(i, i))
+		i += 1
 
 func _process(_delta):
 	queue_redraw()
@@ -40,25 +44,25 @@ func initialize_grid():
 		row.fill(null)
 		grid.append(row)
 
-func add_to_grid(object, relative_pos: Vector2):
+func add_to_grid(object: Object, relative_pos: Vector2i):
 	grid[relative_pos.x][relative_pos.y] = object
 
 	var object_new_position: Vector2 = cell_to_global_position(relative_pos)
 	object.global_position = object_new_position
 
-func add_objects_to_grid(objects, passable):
-	for object: Vector2 in objects:
+func add_objects_to_grid(object_positions: Array[Vector2i], passable: bool):
+	for object: Vector2 in object_positions:
 		var new_object := GridObject.new(passable)
 		grid[object.x][object.y] = new_object
 		astar_grid.set_point_solid(object)
 #endregion
 
 #region Movement and Pathfinding
-func get_movement_path(initial_pos, final_pos):
+func get_movement_path(initial_pos: Vector2i, final_pos: Vector2i) -> Array[Vector2i]:
 	path = astar_grid.get_id_path(initial_pos, final_pos)
 	return path
 
-func grid_move(initial_pos, final_pos):
+func grid_move(initial_pos: Vector2i, final_pos: Vector2i):
 	if initial_pos != final_pos:
 		grid[final_pos.x][final_pos.y] = grid[initial_pos.x][initial_pos.y]
 		grid[initial_pos.x][initial_pos.y] = null
@@ -74,7 +78,7 @@ func setup_astar():
 #endregion
 
 #region Helpers
-func cell_to_global_position(relative_position: Vector2):
+func cell_to_global_position(relative_position: Vector2i):
 	var x = relative_position.x * cell_size.x + cell_size.x/2
 	var y = relative_position.y * cell_size.y + cell_size.y/2
 	return Vector2(x, y)
@@ -85,6 +89,9 @@ func global_to_cell_position(original_position: Vector2):
 	return Vector2(x,y)
 #endregion
 
+## Class used to serve as a representation of possible obstacles on the grid,
+## such as a tree, a hill, or a wall. Additional variables may be added
+## to represent additional behavior.
 class GridObject:
 	var passable: bool
 	
@@ -102,6 +109,6 @@ func draw_debug_points():
 				continue
 			draw_point(global_pos.x, global_pos.y, Color.RED)
 
-func draw_point(x: float, y: float, color) -> void:
+func draw_point(x: float, y: float, color):
 	draw_rect(Rect2(x-4,y-4,8,8), color)
 #endregion

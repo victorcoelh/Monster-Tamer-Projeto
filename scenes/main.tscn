@@ -639,14 +639,18 @@ layer_1/name = "Obstacles"
 layer_1/tile_data = PackedInt32Array(196618, 1179649, 5, 262154, 1179649, 6, 327690, 1179649, 7, 196619, 1245185, 5, 262155, 1245185, 6, 327691, 1245185, 7, 196620, 1310721, 5, 262156, 1310721, 6, 327692, 1310721, 7, 196621, 1376257, 5, 262157, 1376257, 6, 327693, 1376257, 7)
 script = ExtResource("3_yw8ki")
 
-[node name="Grid" type="Node2D" parent="."]
-script = ExtResource("2_848uk")
-
-[node name="BattleController" type="Node2D" parent="."]
-script = ExtResource("6_chnpp")
-
 [node name="EventBus" type="Node2D" parent="."]
 
-[node name="PlayerUnit" parent="." instance=ExtResource("6_rgara")]
+[node name="BattleLogic" type="Node2D" parent="."]
 
-[node name="EnemyUnit" parent="." instance=ExtResource("7_t0sgi")]
+[node name="Grid" type="Node2D" parent="BattleLogic"]
+script = ExtResource("2_848uk")
+
+[node name="BattleController" type="Node2D" parent="BattleLogic"]
+script = ExtResource("6_chnpp")
+
+[node name="Units" type="Node2D" parent="."]
+
+[node name="PlayerUnit" parent="Units" instance=ExtResource("6_rgara")]
+
+[node name="EnemyUnit" parent="Units" instance=ExtResource("7_t0sgi")]
