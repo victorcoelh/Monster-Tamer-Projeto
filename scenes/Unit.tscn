@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://cbllbd0aj3dpc"]
 
-[ext_resource type="Script" path="res://Unit.gd" id="1_lepmf"]
-[ext_resource type="Texture2D" uid="uid://bhbc34nxvgcfc" path="res://graphics/Endrick.jpeg" id="2_qrte8"]
+[ext_resource type="Script" path="res://scripts/unit.gd" id="1_sa5xm"]
+[ext_resource type="Texture2D" uid="uid://bhbc34nxvgcfc" path="res://graphics/Endrick.jpeg" id="2_jcasj"]
 
 [node name="Unit" type="Node2D" groups=["Unit"]]
-script = ExtResource("1_lepmf")
+script = ExtResource("1_sa5xm")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_qrte8")
+texture = ExtResource("2_jcasj")

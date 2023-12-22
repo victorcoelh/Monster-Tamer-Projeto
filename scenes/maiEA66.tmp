@@ -1,12 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://bxrvjw02uooh6"]
+[gd_scene load_steps=10 format=3 uid="uid://bxrvjw02uooh6"]
 
 [ext_resource type="Texture2D" uid="uid://d0ykp1tq5smde" path="res://graphics/tilesets/TX Tileset Grass.png" id="1_1hypd"]
+[ext_resource type="PackedScene" uid="uid://cbllbd0aj3dpc" path="res://scenes/Unit.tscn" id="2_3lker"]
 [ext_resource type="Texture2D" uid="uid://b3n35mfy3wf27" path="res://graphics/tilesets/TX Props.png" id="2_5cc2o"]
 [ext_resource type="Script" path="res://scripts/grid.gd" id="2_848uk"]
-[ext_resource type="Script" path="res://scripts/base_tile_map.gd" id="3_yw8ki"]
-[ext_resource type="Script" path="res://scripts/battle_controller.gd" id="6_chnpp"]
-[ext_resource type="PackedScene" uid="uid://brlvyppc05m5c" path="res://scenes/player_unit.tscn" id="6_rgara"]
-[ext_resource type="PackedScene" uid="uid://caeiehaxd7twj" path="res://scenes/enemy_unit.tscn" id="7_t0sgi"]
+[ext_resource type="Script" path="res://scripts/BaseTileMap.gd" id="3_yw8ki"]
+[ext_resource type="Script" path="res://scenes/BattleController.gd" id="6_chnpp"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_u1it4"]
 texture = ExtResource("1_1hypd")
@@ -642,11 +641,12 @@ script = ExtResource("3_yw8ki")
 [node name="Grid" type="Node2D" parent="."]
 script = ExtResource("2_848uk")
 
+[node name="Player" parent="." instance=ExtResource("2_3lker")]
+
+[node name="Enemy" parent="." instance=ExtResource("2_3lker")]
+modulate = Color(1, 0, 0, 1)
+
 [node name="BattleController" type="Node2D" parent="."]
 script = ExtResource("6_chnpp")
 
 [node name="EventBus" type="Node2D" parent="."]
-
-[node name="PlayerUnit" parent="." instance=ExtResource("6_rgara")]
-
-[node name="EnemyUnit" parent="." instance=ExtResource("7_t0sgi")]
