@@ -55,6 +55,15 @@ func add_objects_to_grid(object_positions: Array[Vector2i], passable: bool):
 		var new_object := GridObject.new(passable)
 		grid[object.x][object.y] = new_object
 		astar_grid.set_point_solid(object)
+
+func get_cell_at_mouse_position() -> Vector2i:
+	var mouse_pos = get_global_mouse_position()
+	var selected_pos = floor(mouse_pos / cell_size)
+	return selected_pos
+
+func get_at(position: Vector2i) -> Object:
+	return grid[position.x][position.y]
+
 #endregion
 
 #region Movement and Pathfinding
@@ -75,6 +84,28 @@ func setup_astar():
 	astar_grid.cell_size = cell_size
 	astar_grid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER
 	astar_grid.update()
+	
+func entities_in_range(positions:Array[Vector2i]) -> Array[BaseUnit]:
+	var entities: Array[BaseUnit] = []
+	
+	for pos in positions:
+		var entity = grid[pos.x][pos.y]
+		
+		if entity is BaseUnit:
+			entities.append(entity)
+	
+	return entities
+
+func enemies_in_range(positions:Array[Vector2i]) -> Array[EnemyUnit]:
+	var entities: Array[BaseUnit] = entities_in_range(positions)
+	
+	var enemies: Array[EnemyUnit] = []
+	
+	for entity in entities:
+		if entity is EnemyUnit:
+			enemies.append(entity)
+	
+	return enemies
 #endregion
 
 #region Helpers

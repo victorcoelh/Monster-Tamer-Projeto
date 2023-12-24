@@ -13,6 +13,7 @@ var current_path = []
 
 @onready var grid = $"../../BattleLogic/Grid"
 
+signal finished_moving
 
 func _process(_delta):
 	if current_path.is_empty():
@@ -24,12 +25,27 @@ func _process(_delta):
 	if global_position == target_position:
 		current_path.pop_front()
 		print(current_path)
+	
+	if current_path.is_empty():
+		finished_moving.emit()
 
 func basic_attack(enemy: BaseUnit):
 	enemy.hp -= attack
 	print(str(enemy.hp) + "/" + str(enemy.max_hp))
 	
 	return
+
+func basic_attack_range(current_pos: Vector2i) -> Array[Vector2i]:
+	var positions: Array[Vector2i] = [
+		Vector2i(current_pos.x - 1, current_pos.y),
+		Vector2i(current_pos.x + 1, current_pos.y),
+		Vector2i(current_pos.x, current_pos.y + 1),
+		Vector2i(current_pos.x, current_pos.y - 1),
+	]
+	
+	return positions
+	
+
 
 func follow_path(path: Array[Vector2i]):
 	current_path = path
