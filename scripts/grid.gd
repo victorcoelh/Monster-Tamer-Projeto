@@ -61,8 +61,8 @@ func get_cell_at_mouse_position() -> Vector2i:
 	var selected_pos = floor(mouse_pos / cell_size)
 	return selected_pos
 
-func get_at(position: Vector2i) -> Object:
-	return grid[position.x][position.y]
+func get_at(vector_position: Vector2i) -> Object:
+	return grid[vector_position.x][vector_position.y]
 
 #endregion
 

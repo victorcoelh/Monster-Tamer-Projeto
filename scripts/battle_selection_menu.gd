@@ -3,14 +3,13 @@ extends Node2D
 @onready var attack = $VBoxContainer/Attack
 @onready var move = $VBoxContainer/Move
 
-@onready var grid = $"../BattleLogic/Grid"
-@onready var player_unit = $"../Units/PlayerUnit"
+@onready var grid = $"../../BattleLogic/Grid"
+@onready var player_unit = $"../../Units/PlayerUnit"
+@onready var event_bus = $"../../EventBus"
 
-signal button_pressed(type: String, selected_pos: Vector2i)
 signal attack_target_selected(target_pos: Vector2i)
 
 var delay_time: float = 0
-
 var is_selecting_target = false
 
 func _process(delta):
@@ -21,21 +20,6 @@ func _process(delta):
 		var target_pos = grid.get_cell_at_mouse_position()
 		attack_target_selected.emit(target_pos)
 		delay_time = 0.5
-
-func _on_attack_pressed():
-	button_pressed.emit("base_attack")
-	delay_time = 0.5
-func _on_wait_pressed():
-	button_pressed.emit("move")
-
-
-func _on_battle_controller_open_battle_menu(selected_pos):
-	set_menu_position(selected_pos)	
-	set_buttons_visibility(selected_pos)
-	
-	await button_pressed
-	
-	visible = false
 
 func set_menu_position(selected_pos):
 	var menu_pos = selected_pos - Vector2i(2,1) 
@@ -53,6 +37,19 @@ func set_buttons_visibility(selected_pos):
 	if enemies_in_range.is_empty():
 		attack.visible = false
 
-
 func _on_battle_controller_select_attack_target():
 	is_selecting_target = true
+
+func _on_event_bus_player_moved(target_pos):
+	set_menu_position(target_pos)
+	set_buttons_visibility(target_pos)
+	await event_bus.action_selected
+	
+	visible = false
+
+func _on_attack_pressed():
+	event_bus.action_selected.emit("base_attack")
+	delay_time = 0.5
+
+func _on_wait_pressed():
+	event_bus.action_selected.emit("wait")
