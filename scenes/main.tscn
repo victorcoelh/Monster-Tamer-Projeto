@@ -654,6 +654,8 @@ script = ExtResource("4_08abm")
 
 [node name="Grid" type="Node2D" parent="BattleLogic"]
 script = ExtResource("2_848uk")
+size = null
+cell_size = null
 
 [node name="BattleController" type="Node2D" parent="BattleLogic"]
 script = ExtResource("6_chnpp")
@@ -681,6 +683,6 @@ script = ExtResource("11_uhmpg")
 
 [connection signal="player_moved" from="EventBus" to="UserInterface/BattleSelectionMenu" method="_on_event_bus_player_moved"]
 [connection signal="player_turn_started" from="EventBus" to="UserInterface/PlayerController" method="_on_event_bus_player_turn_started"]
+[connection signal="unit_attacked" from="EventBus" to="BattleLogic/BattleController" method="_on_event_bus_unit_attacked"]
 [connection signal="open_battle_menu" from="BattleLogic/BattleController" to="UserInterface/BattleSelectionMenu" method="_on_battle_controller_open_battle_menu"]
 [connection signal="select_attack_target" from="BattleLogic/BattleController" to="UserInterface/BattleSelectionMenu" method="_on_battle_controller_select_attack_target"]
-[connection signal="finished_moving" from="Units/PlayerUnit" to="BattleLogic/BattleController" method="_on_player_unit_finished_moving"]

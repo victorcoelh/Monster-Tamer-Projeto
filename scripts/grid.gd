@@ -1,7 +1,6 @@
 extends Node2D
 ## A class for creating and managing the combat system's grid layout.
 
-
 @export var size := Vector2(20, 20)
 @export var cell_size := Vector2(32, 32)
 @onready var astar_grid: AStarGrid2D
@@ -96,9 +95,8 @@ func entities_in_range(positions:Array[Vector2i]) -> Array[BaseUnit]:
 	
 	return entities
 
-func enemies_in_range(positions:Array[Vector2i]) -> Array[EnemyUnit]:
+func enemies_in_range(positions: Array[Vector2i]) -> Array[EnemyUnit]:
 	var entities: Array[BaseUnit] = entities_in_range(positions)
-	
 	var enemies: Array[EnemyUnit] = []
 	
 	for entity in entities:

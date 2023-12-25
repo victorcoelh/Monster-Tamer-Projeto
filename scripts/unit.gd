@@ -5,15 +5,13 @@ extends Node2D
 ##
 ## Custom behavior should be implemented in the inheriting classes.
 
-
 @export var max_hp := 10
 var hp := 10
 var attack := 2
 var current_path = []
 
 @onready var grid = $"../../BattleLogic/Grid"
-
-signal finished_moving
+@onready var event_bus = $"../../EventBus"
 
 func _process(_delta):
 	if current_path.is_empty():
@@ -24,15 +22,13 @@ func _process(_delta):
 	
 	if global_position == target_position:
 		current_path.pop_front()
-		print(current_path)
 	
 	if current_path.is_empty():
-		finished_moving.emit()
+		event_bus.unit_ended_turn.emit()
 
 func basic_attack(enemy: BaseUnit):
 	enemy.hp -= attack
 	print(str(enemy.hp) + "/" + str(enemy.max_hp))
-	
 	return
 
 func basic_attack_range(current_pos: Vector2i) -> Array[Vector2i]:
@@ -42,10 +38,7 @@ func basic_attack_range(current_pos: Vector2i) -> Array[Vector2i]:
 		Vector2i(current_pos.x, current_pos.y + 1),
 		Vector2i(current_pos.x, current_pos.y - 1),
 	]
-	
 	return positions
-	
-
 
 func follow_path(path: Array[Vector2i]):
 	current_path = path
