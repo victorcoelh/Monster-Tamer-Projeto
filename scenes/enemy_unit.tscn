@@ -2,11 +2,11 @@
 
 [ext_resource type="PackedScene" uid="uid://cbllbd0aj3dpc" path="res://scenes/unit.tscn" id="1_qnwno"]
 [ext_resource type="Script" path="res://scripts/enemy_unit.gd" id="2_wtpgv"]
-[ext_resource type="Texture2D" uid="uid://ctp7gccxrbfio" path="res://graphics/icon.svg" id="2_wxoj0"]
+[ext_resource type="Texture2D" uid="uid://012uiyqppwx4" path="res://graphics/monsters/Vocorvo.png" id="3_nqdxt"]
 
 [node name="EnemyUnit" instance=ExtResource("1_qnwno")]
 script = ExtResource("2_wtpgv")
 
 [node name="Sprite2D" parent="." index="0"]
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("2_wxoj0")
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("3_nqdxt")

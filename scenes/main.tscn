@@ -1,12 +1,16 @@
-[gd_scene load_steps=11 format=3 uid="uid://bxrvjw02uooh6"]
+[gd_scene load_steps=15 format=3 uid="uid://bxrvjw02uooh6"]
 
 [ext_resource type="Texture2D" uid="uid://d0ykp1tq5smde" path="res://graphics/tilesets/TX Tileset Grass.png" id="1_1hypd"]
 [ext_resource type="Texture2D" uid="uid://b3n35mfy3wf27" path="res://graphics/tilesets/TX Props.png" id="2_5cc2o"]
 [ext_resource type="Script" path="res://scripts/grid.gd" id="2_848uk"]
 [ext_resource type="Script" path="res://scripts/base_tile_map.gd" id="3_yw8ki"]
+[ext_resource type="Script" path="res://scripts/event_bus.gd" id="4_08abm"]
 [ext_resource type="Script" path="res://scripts/battle_controller.gd" id="6_chnpp"]
 [ext_resource type="PackedScene" uid="uid://brlvyppc05m5c" path="res://scenes/player_unit.tscn" id="6_rgara"]
 [ext_resource type="PackedScene" uid="uid://caeiehaxd7twj" path="res://scenes/enemy_unit.tscn" id="7_t0sgi"]
+[ext_resource type="PackedScene" uid="uid://eox0xlkp7ti4" path="res://scenes/battle_selection_menu.tscn" id="8_k0pav"]
+[ext_resource type="Script" path="res://scripts/player_controller.gd" id="9_gu3ug"]
+[ext_resource type="Script" path="res://scripts/label.gd" id="11_uhmpg"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_u1it4"]
 texture = ExtResource("1_1hypd")
@@ -629,6 +633,10 @@ sources/1 = SubResource("TileSetAtlasSource_8ner3")
 
 [node name="Main" type="Node2D"]
 
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(400, 225)
+zoom = Vector2(2, 2)
+
 [node name="BaseTileMap" type="TileMap" parent="."]
 scale = Vector2(2, 2)
 tile_set = SubResource("TileSet_ug1ja")
@@ -640,11 +648,14 @@ layer_1/tile_data = PackedInt32Array(196618, 1179649, 5, 262154, 1179649, 6, 327
 script = ExtResource("3_yw8ki")
 
 [node name="EventBus" type="Node2D" parent="."]
+script = ExtResource("4_08abm")
 
 [node name="BattleLogic" type="Node2D" parent="."]
 
 [node name="Grid" type="Node2D" parent="BattleLogic"]
 script = ExtResource("2_848uk")
+size = null
+cell_size = null
 
 [node name="BattleController" type="Node2D" parent="BattleLogic"]
 script = ExtResource("6_chnpp")
@@ -654,3 +665,24 @@ script = ExtResource("6_chnpp")
 [node name="PlayerUnit" parent="Units" instance=ExtResource("6_rgara")]
 
 [node name="EnemyUnit" parent="Units" instance=ExtResource("7_t0sgi")]
+
+[node name="UserInterface" type="Node2D" parent="."]
+
+[node name="BattleSelectionMenu" parent="UserInterface" instance=ExtResource("8_k0pav")]
+visible = false
+
+[node name="PlayerController" type="Node2D" parent="UserInterface"]
+script = ExtResource("9_gu3ug")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 844.0
+offset_top = 9.0
+offset_right = 884.0
+offset_bottom = 32.0
+script = ExtResource("11_uhmpg")
+
+[connection signal="player_moved" from="EventBus" to="UserInterface/BattleSelectionMenu" method="_on_event_bus_player_moved"]
+[connection signal="player_turn_started" from="EventBus" to="UserInterface/PlayerController" method="_on_event_bus_player_turn_started"]
+[connection signal="unit_attacked" from="EventBus" to="BattleLogic/BattleController" method="_on_event_bus_unit_attacked"]
+[connection signal="open_battle_menu" from="BattleLogic/BattleController" to="UserInterface/BattleSelectionMenu" method="_on_battle_controller_open_battle_menu"]
+[connection signal="select_attack_target" from="BattleLogic/BattleController" to="UserInterface/BattleSelectionMenu" method="_on_battle_controller_select_attack_target"]
