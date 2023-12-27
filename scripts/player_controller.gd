@@ -12,6 +12,8 @@ enum PlayerState {
 	IDLE
 }
 
+@onready var units = $"../../Units".get_children()
+
 var player_state = PlayerState.IDLE
 var current_unit: BaseUnit = null
 var current_position := Vector2i.ZERO
@@ -25,6 +27,9 @@ func _process(_delta):
 	handle_player_input()
 
 func handle_player_input():
+	if Input.is_action_just_released("Toggle Health Bar"):
+		toggle_hp_bars()
+	
 	match player_state:
 		PlayerState.SELECTING_TROOP:
 			player_selecting_troop()
@@ -84,3 +89,7 @@ func get_unit_at_mouse_position() -> Vector2i:
 		current_unit = selected_unit
 	
 	return selected_position
+
+func toggle_hp_bars():
+	for unit: BaseUnit in units:
+		unit.health_bar.visible = !unit.health_bar.visible

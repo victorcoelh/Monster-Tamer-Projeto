@@ -7,11 +7,13 @@ extends Node2D
 
 @export var max_hp := 10
 var hp := 10
-var attack := 2
+var attack := 8
 var current_path = []
 
 @onready var grid = $"../../BattleLogic/Grid"
 @onready var event_bus = $"../../EventBus"
+@onready var health_bar = $HealthBar
+
 
 func _process(_delta):
 	if current_path.is_empty():
@@ -29,7 +31,7 @@ func _process(_delta):
 func basic_attack(enemy: BaseUnit):
 	enemy.hp -= attack
 	print(str(enemy.hp) + "/" + str(enemy.max_hp))
-	return
+	return attack
 
 func basic_attack_range(current_pos: Vector2i) -> Array[Vector2i]:
 	var positions: Array[Vector2i] = [
@@ -42,3 +44,5 @@ func basic_attack_range(current_pos: Vector2i) -> Array[Vector2i]:
 
 func follow_path(path: Array[Vector2i]):
 	current_path = path
+	
+

@@ -634,8 +634,9 @@ sources/1 = SubResource("TileSetAtlasSource_8ner3")
 [node name="Main" type="Node2D"]
 
 [node name="Camera2D" type="Camera2D" parent="."]
+visible = false
 position = Vector2(400, 225)
-zoom = Vector2(2, 2)
+enabled = false
 
 [node name="BaseTileMap" type="TileMap" parent="."]
 scale = Vector2(2, 2)
