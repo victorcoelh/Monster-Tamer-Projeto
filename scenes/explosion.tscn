@@ -55,6 +55,7 @@ _data = {
 }
 
 [node name="Explosion" type="Node2D"]
+visible = false
 script = ExtResource("1_rccqh")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

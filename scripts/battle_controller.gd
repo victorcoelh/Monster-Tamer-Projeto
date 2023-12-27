@@ -21,7 +21,9 @@ func _process(_delta):
 func resolve_attack(attack: Callable, target_unit: BaseUnit):
 	## Functinal based approach, which applies an attack function
 	## over one or more targets.
-	attack.call(target_unit)
+	var damage: int = attack.call(target_unit)
+	event_bus.unit_took_damage.emit(target_unit, damage) 
+	
 	var instance = explosion.instantiate()
 	target_unit.add_child(instance)
 
