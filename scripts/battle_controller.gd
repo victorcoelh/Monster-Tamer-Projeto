@@ -14,6 +14,7 @@ signal select_attack_target
 @onready var event_bus = $"../../EventBus"
 @onready var grid = $"../Grid"
 
+
 func _process(_delta):
 	if Input.is_action_just_released("Cancel"):
 		event_bus.player_turn_started.emit()

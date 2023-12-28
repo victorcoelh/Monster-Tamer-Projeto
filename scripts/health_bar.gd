@@ -5,14 +5,10 @@ extends TextureProgressBar
 
 const DRAINING_MULTIPLY := 1000
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready():
 	event_bus.unit_took_damage.connect(_on_event_bus_unit_took_damage)
 	set_health_values()
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
 
 func set_health_values():
 	min_value = 0
@@ -24,12 +20,8 @@ func get_hp_draining_duration(damage: int) -> float:
 
 func _on_event_bus_unit_took_damage(target_unit: BaseUnit, damage: int):
 	var target_bar = target_unit.health_bar
-
 	var draining_duration: float = get_hp_draining_duration(damage)
-
 	var tween = create_tween()
+	
 	tween.tween_property(target_bar, "value" , target_unit.hp * DRAINING_MULTIPLY, draining_duration)
 	tween.tween_callback(tween.kill)
-	
-	
-	
