@@ -27,5 +27,6 @@ rounded = true
 texture_under = ExtResource("3_lxupb")
 texture_over = ExtResource("4_lenaq")
 texture_progress = ExtResource("5_xlpyd")
+texture_progress_offset = Vector2(6, 15)
 script = ExtResource("6_6mak5")
 metadata/_edit_use_anchors_ = true

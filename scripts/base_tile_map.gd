@@ -1,7 +1,7 @@
 extends TileMap
 
 ## All available layers in the TileMap being used.
-enum TileLayer {GROUND, OBSTACLES}
+enum TileLayer {GROUND, ROADS, OBSTACLES}
 
 
 func _ready():
