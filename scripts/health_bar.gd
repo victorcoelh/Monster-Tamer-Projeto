@@ -5,7 +5,6 @@ extends TextureProgressBar
 
 const DRAINING_MULTIPLY := 1000
 
-
 func _ready():
 	event_bus.unit_took_damage.connect(_on_event_bus_unit_took_damage)
 	set_health_values()

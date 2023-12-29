@@ -1,0 +1,160 @@
+[gd_scene load_steps=7 format=3 uid="uid://cb5flhrouevwa"]
+
+[ext_resource type="Texture2D" uid="uid://c1tjja02slpma" path="res://graphics/UI/unit_overview.png" id="1_cvcmk"]
+[ext_resource type="Script" path="res://scenes/unit_overview.gd" id="1_p4lus"]
+[ext_resource type="FontFile" uid="uid://c6eto2yrtv7nj" path="res://fonts/m5x7.ttf" id="2_38dmw"]
+[ext_resource type="Texture2D" uid="uid://bvoisgm5tdx0c" path="res://graphics/UI/big_hp_bar_progress.png" id="4_2j6eq"]
+[ext_resource type="Texture2D" uid="uid://cnbe7gu2mvw74" path="res://graphics/UI/big_hp_bar_bg.png" id="4_fvwri"]
+[ext_resource type="Texture2D" uid="uid://c8fcvma2oj5op" path="res://graphics/UI/big_hp_bar_over.png" id="5_l483w"]
+
+[node name="UnitOverview" type="CanvasLayer"]
+offset = Vector2(200, 120)
+scale = Vector2(4, 4)
+transform = Transform2D(4, 0, 0, 4, 200, 120)
+script = ExtResource("1_p4lus")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_cvcmk")
+
+[node name="UnitName" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 6.0
+offset_top = -17.0
+offset_right = 46.0
+offset_bottom = 23.0
+scale = Vector2(0.8, 0.8)
+
+[node name="UnitName" type="Label" parent="UnitName"]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_right = 41.0
+offset_bottom = 23.0
+theme_override_fonts/font = ExtResource("2_38dmw")
+theme_override_font_sizes/font_size = 16
+text = "UnitName"
+horizontal_alignment = 2
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="UnitMovement" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -33.0
+offset_top = 7.0
+offset_right = -33.0
+offset_bottom = 7.0
+scale = Vector2(0.25, 0.25)
+
+[node name="UnitMovement" type="Label" parent="UnitMovement"]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_right = 41.0
+offset_bottom = 23.0
+theme_override_fonts/font = ExtResource("2_38dmw")
+theme_override_font_sizes/font_size = 32
+text = "99
+"
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="UnitAttack" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -23.0
+offset_top = 7.0
+offset_right = -23.0
+offset_bottom = 7.0
+scale = Vector2(0.25, 0.25)
+
+[node name="UnitAttack" type="Label" parent="UnitAttack"]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_right = 41.0
+offset_bottom = 23.0
+theme_override_fonts/font = ExtResource("2_38dmw")
+theme_override_font_sizes/font_size = 32
+text = "99
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="UnitSpeed" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -5.0
+offset_top = 7.0
+offset_right = -5.0
+offset_bottom = 7.0
+scale = Vector2(0.25, 0.25)
+
+[node name="UnitSpeed" type="Label" parent="UnitSpeed"]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_right = 41.0
+offset_bottom = 23.0
+theme_override_fonts/font = ExtResource("2_38dmw")
+theme_override_font_sizes/font_size = 32
+text = "99
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="UnitArmor" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 9.0
+offset_top = 7.0
+offset_right = 9.0
+offset_bottom = 7.0
+scale = Vector2(0.25, 0.25)
+
+[node name="UnitArmor" type="Label" parent="UnitArmor"]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_right = 41.0
+offset_bottom = 23.0
+theme_override_fonts/font = ExtResource("2_38dmw")
+theme_override_font_sizes/font_size = 32
+text = "99
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+offset_left = -43.0
+offset_top = -2.75
+offset_right = 44.0
+offset_bottom = 5.25
+value = 20.0
+texture_under = ExtResource("4_fvwri")
+texture_over = ExtResource("5_l483w")
+texture_progress = ExtResource("4_2j6eq")
+texture_progress_offset = Vector2(5, 2)
+
+[node name="UnitHP" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 9.0
+offset_top = 7.0
+offset_right = 9.0
+offset_bottom = 7.0
+scale = Vector2(0.175, 0.175)
+
+[node name="UnitHP" type="Label" parent="UnitHP"]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 0
+offset_left = 118.571
+offset_top = -12.8571
+offset_right = 159.571
+offset_bottom = 13.1429
+theme_override_fonts/font = ExtResource("2_38dmw")
+theme_override_font_sizes/font_size = 32
+text = "99/99
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
