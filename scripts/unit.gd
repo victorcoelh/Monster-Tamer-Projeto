@@ -25,7 +25,7 @@ var current_path := []
 func _process(_delta):
 	if current_path.is_empty():
 		return
-	
+		
 	var target_position = grid.cell_to_global_position(current_path.front())
 	global_position = global_position.move_toward(target_position, 2)
 	

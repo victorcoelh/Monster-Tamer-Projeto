@@ -1,6 +1,6 @@
 extends Label
 
-@onready var player_controller = $"../UserInterface/PlayerController"
+@onready var player_controller = $"../PlayerController"
 
 func _process(_delta):
 	var variables = [player_controller.PlayerState.keys()[player_controller.player_state], 

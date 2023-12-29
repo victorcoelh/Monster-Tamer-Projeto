@@ -92,7 +92,6 @@ func entities_in_range(positions:Array[Vector2i]) -> Array[BaseUnit]:
 	
 	for pos in positions:
 		var entity = grid[pos.x][pos.y]
-		
 		if entity is BaseUnit:
 			entities.append(entity)
 	
@@ -107,6 +106,32 @@ func enemies_in_range(positions: Array[Vector2i]) -> Array[EnemyUnit]:
 			enemies.append(entity)
 	
 	return enemies
+
+func tiles_in_counted_range(initial_pos: Vector2i, tile_range: int):
+	# TODO: Implement a better algorithm. The one I implemented here is shit.
+	var possible_tiles: Array[Vector2i] = [initial_pos]
+	var current_pos: Vector2i
+	var diff: Vector2i
+	var dfs_queue = []
+	dfs_queue.append_array(get_neighbors(initial_pos))
+	
+	while not dfs_queue.is_empty():
+		current_pos = dfs_queue.pop_front()
+		diff = current_pos - initial_pos
+		
+		if abs(diff.x) + abs(diff.y) <= tile_range and current_pos not in possible_tiles and get_at(current_pos) == null:
+			possible_tiles.append(current_pos)
+			
+			for neighbor in get_neighbors(current_pos):
+				if neighbor not in dfs_queue:
+					dfs_queue.append(neighbor)
+	return possible_tiles
+
+func get_neighbors(tile_position: Vector2i):
+	return [tile_position + Vector2i(0, -1),
+			tile_position + Vector2i(0, 1),
+			tile_position + Vector2i(-1, 0),
+			tile_position + Vector2i(1, 0)]
 #endregion
 
 #region Helpers
