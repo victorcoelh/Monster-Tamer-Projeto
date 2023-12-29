@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://cb5flhrouevwa"]
 
 [ext_resource type="Texture2D" uid="uid://c1tjja02slpma" path="res://graphics/UI/unit_overview.png" id="1_cvcmk"]
-[ext_resource type="Script" path="res://scenes/unit_overview.gd" id="1_p4lus"]
+[ext_resource type="Script" path="res://scripts/unit_overview.gd" id="1_p4lus"]
 [ext_resource type="FontFile" uid="uid://c6eto2yrtv7nj" path="res://fonts/m5x7.ttf" id="2_38dmw"]
 [ext_resource type="Texture2D" uid="uid://bvoisgm5tdx0c" path="res://graphics/UI/big_hp_bar_progress.png" id="4_2j6eq"]
 [ext_resource type="Texture2D" uid="uid://cnbe7gu2mvw74" path="res://graphics/UI/big_hp_bar_bg.png" id="4_fvwri"]
@@ -28,11 +28,12 @@ scale = Vector2(0.8, 0.8)
 [node name="UnitName" type="Label" parent="UnitName"]
 self_modulate = Color(0, 0, 0, 1)
 layout_mode = 0
+offset_left = -27.0
 offset_right = 41.0
 offset_bottom = 23.0
 theme_override_fonts/font = ExtResource("2_38dmw")
 theme_override_font_sizes/font_size = 16
-text = "UnitName"
+text = "Unit Name"
 horizontal_alignment = 2
 vertical_alignment = 1
 autowrap_mode = 2

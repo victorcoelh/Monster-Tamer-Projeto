@@ -9,7 +9,7 @@ extends CanvasLayer
 
 @onready var health_bar = $HealthBar
 
-@onready var player_controller = $"../PlayerController"
+@onready var player_controller = $"../../PlayerController"
 
 var player_state
 var PlayerState
