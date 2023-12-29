@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bxrvjw02uooh6"]
+[gd_scene load_steps=16 format=3 uid="uid://bxrvjw02uooh6"]
 
 [ext_resource type="Texture2D" uid="uid://d0ykp1tq5smde" path="res://graphics/tilesets/TX Tileset Grass.png" id="1_1hypd"]
 [ext_resource type="Texture2D" uid="uid://b3n35mfy3wf27" path="res://graphics/tilesets/TX Props.png" id="2_5cc2o"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://eox0xlkp7ti4" path="res://scenes/battle_selection_menu.tscn" id="8_k0pav"]
 [ext_resource type="Script" path="res://scripts/player_controller.gd" id="9_gu3ug"]
 [ext_resource type="Script" path="res://scripts/label.gd" id="11_uhmpg"]
+[ext_resource type="PackedScene" uid="uid://cb5flhrouevwa" path="res://scenes/unit_overview.tscn" id="12_pd8h1"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_u1it4"]
 texture = ExtResource("1_1hypd")
@@ -636,7 +637,6 @@ sources/1 = SubResource("TileSetAtlasSource_8ner3")
 [node name="Camera2D" type="Camera2D" parent="."]
 visible = false
 position = Vector2(400, 225)
-enabled = false
 
 [node name="BaseTileMap" type="TileMap" parent="."]
 scale = Vector2(2, 2)
@@ -655,8 +655,6 @@ script = ExtResource("4_08abm")
 
 [node name="Grid" type="Node2D" parent="BattleLogic"]
 script = ExtResource("2_848uk")
-size = null
-cell_size = null
 
 [node name="BattleController" type="Node2D" parent="BattleLogic"]
 script = ExtResource("6_chnpp")
@@ -674,6 +672,9 @@ visible = false
 
 [node name="PlayerController" type="Node2D" parent="UserInterface"]
 script = ExtResource("9_gu3ug")
+
+[node name="UnitOverview" parent="UserInterface" instance=ExtResource("12_pd8h1")]
+visible = false
 
 [node name="Label" type="Label" parent="."]
 offset_left = 844.0

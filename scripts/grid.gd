@@ -23,10 +23,13 @@ func _ready():
 	var objects: Array[Vector2i] = base_tile_map.get_obstacles()
 	add_objects_to_grid(objects, false)
 	
-	var i = 0
-	for unit in units.get_children():
-		add_to_grid(unit, Vector2i(i, i))
-		i += 1
+	#var i = 0
+	#for unit in units.get_children():
+		#add_to_grid(unit, Vector2i(i, i))
+		#i += 1
+	var unites = units.get_children()
+	add_to_grid(unites[0], Vector2i(5,5))
+	add_to_grid(unites[1], Vector2i(6,6))
 
 func _process(_delta):
 	queue_redraw()

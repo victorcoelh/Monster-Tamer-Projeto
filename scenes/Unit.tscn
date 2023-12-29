@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cbllbd0aj3dpc"]
+[gd_scene load_steps=10 format=3 uid="uid://cbllbd0aj3dpc"]
 
 [ext_resource type="Script" path="res://scripts/unit.gd" id="1_sa5xm"]
 [ext_resource type="Texture2D" uid="uid://bhbc34nxvgcfc" path="res://graphics/Endrick.jpeg" id="2_jcasj"]
@@ -6,6 +6,44 @@
 [ext_resource type="Texture2D" uid="uid://48j0jufih6cy" path="res://graphics/UI/unit_health_bar_over.png" id="4_lenaq"]
 [ext_resource type="Texture2D" uid="uid://bcwc24vsbepds" path="res://graphics/UI/unit_health_bar_prog.png" id="5_xlpyd"]
 [ext_resource type="Script" path="res://scripts/health_bar.gd" id="6_6mak5"]
+
+[sub_resource type="Animation" id="Animation_jfgj0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_fkasl"]
+resource_name = "walking"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8onki"]
+_data = {
+"RESET": SubResource("Animation_jfgj0"),
+"walking": SubResource("Animation_fkasl")
+}
 
 [node name="Unit" type="Node2D" groups=["Unit"]]
 script = ExtResource("1_sa5xm")
@@ -15,6 +53,10 @@ texture_filter = 1
 texture = ExtResource("2_jcasj")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_8onki")
+}
+autoplay = "walking"
 
 [node name="HealthBar" type="TextureProgressBar" parent="."]
 offset_left = -16.0

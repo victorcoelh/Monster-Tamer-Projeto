@@ -12,6 +12,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	
 	pass
 
 func set_health_values():
@@ -30,6 +31,7 @@ func _on_event_bus_unit_took_damage(target_unit: BaseUnit, damage: int):
 	var tween = create_tween()
 	tween.tween_property(target_bar, "value" , target_unit.hp * DRAINING_MULTIPLY, draining_duration)
 	tween.tween_callback(tween.kill)
+	
 	
 	
 	

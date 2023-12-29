@@ -6,9 +6,16 @@ extends Node2D
 ## Custom behavior should be implemented in the inheriting classes.
 
 @export var max_hp := 10
+
+var unit_name := "Endrick"
+
 var hp := 10
 var attack := 8
-var current_path = []
+var speed := 5
+var movement := 5
+var armor := 7
+
+var current_path := []
 
 @onready var grid = $"../../BattleLogic/Grid"
 @onready var event_bus = $"../../EventBus"

@@ -1,46 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://brlvyppc05m5c"]
+[gd_scene load_steps=4 format=3 uid="uid://brlvyppc05m5c"]
 
 [ext_resource type="PackedScene" uid="uid://cbllbd0aj3dpc" path="res://scenes/Unit.tscn" id="1_k4gy4"]
 [ext_resource type="Script" path="res://scripts/player_unit.gd" id="2_q1kwg"]
 [ext_resource type="Texture2D" uid="uid://d28leod0vhgu1" path="res://graphics/monsters/Endrick.png" id="3_kkf0q"]
-
-[sub_resource type="Animation" id="Animation_jfgj0"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-
-[sub_resource type="Animation" id="Animation_fkasl"]
-resource_name = "walking"
-length = 0.5
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_8onki"]
-_data = {
-"RESET": SubResource("Animation_jfgj0"),
-"walking": SubResource("Animation_fkasl")
-}
 
 [node name="PlayerUnit" instance=ExtResource("1_k4gy4")]
 script = ExtResource("2_q1kwg")
@@ -50,14 +12,7 @@ scale = Vector2(0.4, 0.4)
 texture = ExtResource("3_kkf0q")
 hframes = 5
 
-[node name="AnimationPlayer" parent="." index="1"]
-libraries = {
-"": SubResource("AnimationLibrary_8onki")
-}
-autoplay = "walking"
-
 [node name="HealthBar" parent="." index="2"]
 max_value = 100.0
 value = 100.0
 rounded = false
-script = null
