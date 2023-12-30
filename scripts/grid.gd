@@ -54,6 +54,8 @@ func add_to_grid(object: Object, relative_pos: Vector2i):
 
 func add_objects_to_grid(object_positions: Array[Vector2i], passable: bool):
 	for object: Vector2 in object_positions:
+		if object.x < 0 or object.y < 0 or object.x >= size.x or object.y >= size.y:
+			continue
 		var new_object := GridObject.new(passable)
 		grid[object.x][object.y] = new_object
 		astar_grid.set_point_solid(object)
@@ -65,7 +67,6 @@ func get_cell_at_mouse_position() -> Vector2i:
 
 func get_at(vector_position: Vector2i) -> Object:
 	return grid[vector_position.x][vector_position.y]
-
 #endregion
 
 #region Movement and Pathfinding
@@ -118,6 +119,9 @@ func tiles_in_counted_range(initial_pos: Vector2i, tile_range: int):
 	while not dfs_queue.is_empty():
 		current_pos = dfs_queue.pop_front()
 		diff = current_pos - initial_pos
+		
+		if current_pos.x >= size.x or current_pos.y >= size.y or current_pos.x < 0 or current_pos.y < 0:
+			continue
 		
 		if abs(diff.x) + abs(diff.y) <= tile_range and current_pos not in possible_tiles and get_at(current_pos) == null:
 			possible_tiles.append(current_pos)

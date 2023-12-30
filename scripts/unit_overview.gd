@@ -45,10 +45,3 @@ func set_health_bar_value():
 	health_bar.min_value = 0
 	health_bar.max_value = current_unit.max_hp
 	health_bar.value = current_unit.hp
-	
-	print(health_bar.value)
-	
-
-
-	
-	
