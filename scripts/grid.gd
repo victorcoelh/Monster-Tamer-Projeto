@@ -23,10 +23,6 @@ func _ready():
 	var objects: Array[Vector2i] = base_tile_map.get_obstacles()
 	add_objects_to_grid(objects, false)
 	
-	#var i = 0
-	#for unit in units.get_children():
-		#add_to_grid(unit, Vector2i(i, i))
-		#i += 1
 	var unites = units.get_children()
 	add_to_grid(unites[0], Vector2i(5,5))
 	add_to_grid(unites[1], Vector2i(6,6))
@@ -35,6 +31,7 @@ func _process(_delta):
 	queue_redraw()
 
 func _draw():
+	draw_grid_lines()
 	draw_debug_points()
 
 #region Grid Control
@@ -150,6 +147,33 @@ func global_to_cell_position(original_position: Vector2):
 	return Vector2(x,y)
 #endregion
 
+#region Grid Drawing
+func draw_grid_lines():
+	for i in range(size.x+1):
+		var starting_pos = cell_to_global_position(Vector2(i, 0))
+		var end_pos = cell_to_global_position(Vector2(i, size.y))
+		draw_grid_line(starting_pos, end_pos, Color(0, 0, 0, 0.1))
+	for j in range(size.y+1):
+		var starting_pos = cell_to_global_position(Vector2(0, j))
+		var end_pos = cell_to_global_position(Vector2(size.x, j))
+		draw_grid_line(starting_pos, end_pos, Color(0, 0, 0, 0.1))
+
+func draw_grid_line(starting_pos: Vector2, end_pos: Vector2, color: Color):
+	draw_line(starting_pos - cell_size/2, end_pos - cell_size/2, color, 2.0)
+
+func draw_debug_points():
+	for i in range(size.x):
+		for j in range(size.y):
+			var global_pos = cell_to_global_position(Vector2(i, j))
+			
+			if grid[i][j] is GridObject:
+				draw_point(global_pos.x, global_pos.y, Color.YELLOW)
+				continue
+
+func draw_point(x: float, y: float, color):
+	draw_rect(Rect2(x-4,y-4,8,8), color)
+#endregion
+
 ## Class used to serve as a representation of possible obstacles on the grid,
 ## such as a tree, a hill, or a wall. Additional variables may be added
 ## to represent additional behavior.
@@ -158,18 +182,3 @@ class GridObject:
 	
 	func _init(is_passable):
 		self.passable = is_passable
-
-#region Debug
-func draw_debug_points():
-	for i in range(grid.size()):
-		for j in range(grid[i].size()):
-			var global_pos = cell_to_global_position(Vector2(i, j))
-			
-			if grid[i][j] is GridObject:
-				draw_point(global_pos.x, global_pos.y, Color.YELLOW)
-				continue
-			draw_point(global_pos.x, global_pos.y, Color.RED)
-
-func draw_point(x: float, y: float, color):
-	draw_rect(Rect2(x-4,y-4,8,8), color)
-#endregion
