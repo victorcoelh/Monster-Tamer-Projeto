@@ -16,22 +16,22 @@ var PlayerState
 var current_unit: BaseUnit
 
 func _process(_delta):
+	# TO-DO: Instead of checking the visibility and params in process, use signals
 	player_state = player_controller.player_state
 	PlayerState = player_controller.PlayerState
 	current_unit = player_controller.current_unit
-	
+
 	if current_unit == null:
-		return 
-	
-	if player_state == PlayerState.SELECTING_MOVEMENT:
+		visible = false
+		return
+		
+	if player_state not in [PlayerState.IDLE, PlayerState.SELECTING_TROOP]:
 		set_label_text()
 		set_health_bar_value()
 		visible = true
 		return
 	
-	if player_state == PlayerState.MOVING:
-		visible = false
-		return 
+	visible = false
 
 func set_label_text():
 	unit_name_label.text = current_unit.unit_name

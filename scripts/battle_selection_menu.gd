@@ -5,8 +5,13 @@ extends Node2D
 @onready var grid = $"../../BattleLogic/Grid"
 @onready var player_unit = $"../../Units/PlayerUnit"
 @onready var event_bus = $"../../EventBus"
+@onready var battle_camera = $"../../BattleCamera"
+
 
 var attack_range: Array[Vector2i]
+
+func _ready():
+	scale = scale / battle_camera.zoom
 
 func set_menu_position(selected_pos):
 	var menu_pos = selected_pos - Vector2i(2,1) 
@@ -33,3 +38,4 @@ func _on_attack_pressed():
 
 func _on_wait_pressed():
 	event_bus.action_selected.emit("wait", [])
+

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bxrvjw02uooh6"]
+[gd_scene load_steps=20 format=3 uid="uid://bxrvjw02uooh6"]
 
 [ext_resource type="Texture2D" uid="uid://d0ykp1tq5smde" path="res://graphics/tilesets/TX Tileset Grass.png" id="1_1hypd"]
 [ext_resource type="Script" path="res://scenes/battle_camera.gd" id="1_yyg60"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://brlvyppc05m5c" path="res://scenes/player_unit.tscn" id="6_rgara"]
 [ext_resource type="PackedScene" uid="uid://caeiehaxd7twj" path="res://scenes/enemy_unit.tscn" id="7_t0sgi"]
 [ext_resource type="PackedScene" uid="uid://eox0xlkp7ti4" path="res://scenes/battle_selection_menu.tscn" id="8_k0pav"]
+[ext_resource type="Script" path="res://scripts/unit_initializer.gd" id="9_4aop7"]
 [ext_resource type="Script" path="res://scripts/player_controller.gd" id="9_gu3ug"]
 [ext_resource type="Script" path="res://scripts/label.gd" id="11_uhmpg"]
 [ext_resource type="PackedScene" uid="uid://cb5flhrouevwa" path="res://scenes/unit_overview.tscn" id="12_pd8h1"]
@@ -767,6 +768,9 @@ script = ExtResource("2_848uk")
 [node name="BattleController" type="Node2D" parent="BattleLogic"]
 script = ExtResource("6_chnpp")
 
+[node name="UnitInitializer" type="Node2D" parent="BattleLogic"]
+script = ExtResource("9_4aop7")
+
 [node name="PlayerController" type="Node2D" parent="."]
 script = ExtResource("9_gu3ug")
 
@@ -785,13 +789,13 @@ visible = false
 visible = false
 
 [node name="Label" type="Label" parent="."]
-visible = false
 offset_left = 844.0
 offset_top = 9.0
 offset_right = 884.0
 offset_bottom = 32.0
 script = ExtResource("11_uhmpg")
 
+[connection signal="zoom_changed" from="BattleCamera" to="UserInterface/BattleSelectionMenu" method="_on_battle_camera_zoom_changed"]
 [connection signal="player_moved" from="EventBus" to="UserInterface/BattleSelectionMenu" method="_on_event_bus_player_moved"]
 [connection signal="player_turn_started" from="EventBus" to="PlayerController" method="_on_event_bus_player_turn_started"]
 [connection signal="unit_attacked" from="EventBus" to="BattleLogic/BattleController" method="_on_event_bus_unit_attacked"]
