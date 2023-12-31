@@ -1,6 +1,5 @@
 extends Camera2D
 
-
 @export var min_mouse_distance: int = 50
 @export var max_speed: float = 4
 @export var acceleration: float = 0.2
@@ -12,6 +11,7 @@ var camera_size: Vector2i
 var direction = Vector2.ZERO
 var speed: float = 0
 var elapsed_time = 0
+
 
 
 func _ready():
@@ -54,3 +54,6 @@ func move_camera(delta):
 	
 	global_position.x = clamp(new_position.x, lower_bounds.x, upper_bounds.x - camera_size.x)
 	global_position.y = clamp(new_position.y, lower_bounds.y, upper_bounds.y - camera_size.y)
+
+
+	

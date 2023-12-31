@@ -67,6 +67,9 @@ func get_cell_at_mouse_position() -> Vector2i:
 
 func get_at(vector_position: Vector2i) -> Object:
 	return grid[vector_position.x][vector_position.y]
+	
+func set_at(obj: Object, pos: Vector2):
+	grid[pos.x][pos.y] = obj
 #endregion
 
 #region Movement and Pathfinding
@@ -76,8 +79,9 @@ func get_movement_path(initial_pos: Vector2i, final_pos: Vector2i) -> Array[Vect
 
 func grid_move(initial_pos: Vector2i, final_pos: Vector2i):
 	if initial_pos != final_pos:
-		grid[final_pos.x][final_pos.y] = grid[initial_pos.x][initial_pos.y]
-		grid[initial_pos.x][initial_pos.y] = null
+		var unit = get_at(initial_pos)
+		set_at(unit,final_pos)
+		set_at(null, initial_pos)
 
 func setup_astar():
 	astar_grid = AStarGrid2D.new()
@@ -92,7 +96,7 @@ func entities_in_range(positions:Array[Vector2i]) -> Array[BaseUnit]:
 	var entities: Array[BaseUnit] = []
 	
 	for pos in positions:
-		var entity = grid[pos.x][pos.y]
+		var entity = get_at(pos)
 		if entity is BaseUnit:
 			entities.append(entity)
 	

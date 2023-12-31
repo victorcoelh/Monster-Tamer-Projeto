@@ -4,12 +4,12 @@ extends Node2D
 @onready var event_bus = $"../EventBus"
 
 enum PlayerState {
-	SELECTING_TROOP,
-	SELECTING_MOVEMENT,
-	SELECTING_ACTION,
-	SELECTING_TARGET,
-	MOVING,
-	IDLE
+	SELECTING_TROOP, # 0
+	SELECTING_MOVEMENT, # 1
+	SELECTING_ACTION, # 2
+	SELECTING_TARGET, # 3
+	MOVING, # 4
+	IDLE # 5
 }
 
 @onready var units = $"../Units".get_children()
@@ -84,6 +84,7 @@ func player_selecting_action():
 		waiting = false
 	
 	if selected_action[0] == "wait":
+		print("Andando")
 		player_state = PlayerState.MOVING
 
 func player_selecting_target():
