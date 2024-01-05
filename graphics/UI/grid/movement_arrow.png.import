@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cmlhitjpj5xur"
-path="res://.godot/imported/grid_tile.png-0ca296529d736609e774d674483ea469.ctex"
+uid="uid://bmpa78cxlpci1"
+path="res://.godot/imported/movement_arrow.png-e2226f3566ac1b49649dc49f94cc4ba7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/UI/grid_tile.png"
-dest_files=["res://.godot/imported/grid_tile.png-0ca296529d736609e774d674483ea469.ctex"]
+source_file="res://graphics/UI/grid/movement_arrow.png"
+dest_files=["res://.godot/imported/movement_arrow.png-e2226f3566ac1b49649dc49f94cc4ba7.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c3ndeleaola4q"
-path="res://.godot/imported/pos_indicator.png-bc3f22cc2d42fcb995b080d9277b1f79.ctex"
+uid="uid://cml2ihlgd2enr"
+path="res://.godot/imported/Endrickremake.png-5b06c86cb2698db7304692677e0bd3fa.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/UI/pos_indicator.png"
-dest_files=["res://.godot/imported/pos_indicator.png-bc3f22cc2d42fcb995b080d9277b1f79.ctex"]
+source_file="res://graphics/monsters/Endrickremake.png"
+dest_files=["res://.godot/imported/Endrickremake.png-5b06c86cb2698db7304692677e0bd3fa.ctex"]
 
 [params]
 

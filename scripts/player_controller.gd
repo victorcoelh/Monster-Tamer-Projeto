@@ -23,8 +23,8 @@ var waiting = false
 var RANGE = 4
 var draw_pos = []
 var square_color: Color
-var texture = preload("res://graphics/UI/pos_indicator.png")
-
+var square_texture = preload("res://graphics/UI/grid/pos_indicator.png")
+const MOVEMENT_INDICATOR = preload("res://scenes/movement_indicator.tscn")
 
 func _ready():
 	pass
@@ -60,13 +60,17 @@ func player_selecting_troop():
 		player_state = PlayerState.SELECTING_MOVEMENT
 
 func player_selecting_movement():
+	var mouse_path = grid.get_movement_path(current_position, grid.get_cell_at_mouse_position())
+	undraw_movement_indicators()
+	draw_movement_indicators(mouse_path)
+	
 	if Input.is_action_just_released("Select"):
 		target_position = grid.get_cell_at_mouse_position()
 		
 		if target_position not in draw_pos:
 			print("Out of range")
 			return
-	
+		
 		event_bus.player_moved.emit(target_position)
 		player_state = PlayerState.SELECTING_ACTION
 
@@ -102,6 +106,7 @@ func player_selecting_target():
 			undraw_positions()
 
 func player_moving():
+	undraw_movement_indicators()
 	var path = grid.get_movement_path(current_position, target_position)
 	grid.grid_move(current_position, target_position)
 	current_unit.follow_path(path)
@@ -120,6 +125,31 @@ func get_unit_at_mouse_position() -> Vector2i:
 #endregion
 
 #region Movement Drawing
+func draw_movement_indicators(positions: Array[Vector2i]):
+	if false in positions.map(func(x): return x in draw_pos):
+		return
+	
+	for i in range(1, positions.size()):
+		var global_pos = grid.cell_to_global_position(positions[i])
+		var indicator := MOVEMENT_INDICATOR.instantiate()
+		indicator.global_position = global_pos
+		
+		if i == positions.size()-1:
+			indicator.set_indicator_rotation(positions[i] - positions[i-1])
+			indicator.set_indicator_type(indicator.ArrowType.END)
+		elif (positions[i+1] - positions[i-1]).length_squared() < 4:
+			indicator.set_indicator_rotation(positions[i+1] - positions[i], positions[i] - positions[i-1])
+			indicator.set_indicator_type(indicator.ArrowType.CORNER)
+		else:
+			indicator.set_indicator_rotation(positions[i+1] - positions[i])
+			indicator.set_indicator_type(indicator.ArrowType.STRAIGHT)
+		
+		add_child(indicator)
+
+func undraw_movement_indicators():
+	for child in get_children():
+		child.queue_free()
+
 func draw_positions(positions: Array[Vector2i], color := Color(1, 1, 1, 1)):
 	draw_pos = positions
 	square_color = color
@@ -132,7 +162,7 @@ func undraw_positions():
 func _draw():
 	for pos in draw_pos:
 		var global_pos = grid.cell_to_global_position(pos)
-		draw_texture(texture, global_pos - Vector2(16, 16), square_color)
+		draw_texture(square_texture, global_pos - Vector2(16, 16), square_color)
 #endregion
 
 func toggle_hp_bars():

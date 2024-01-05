@@ -51,5 +51,3 @@ func basic_attack_range(current_pos: Vector2i) -> Array[Vector2i]:
 
 func follow_path(path: Array[Vector2i]):
 	current_path = path
-	
-
