@@ -1,0 +1,77 @@
+[gd_scene load_steps=6 format=3 uid="uid://dlx2yg1ivqchf"]
+
+[ext_resource type="Script" path="res://scripts/turn_indicator.gd" id="1_jqx2s"]
+[ext_resource type="Texture2D" uid="uid://bxm0wn228gi88" path="res://graphics/UI/turn_background.png" id="1_kcnct"]
+[ext_resource type="FontFile" uid="uid://c6eto2yrtv7nj" path="res://fonts/m5x7.ttf" id="2_45wqd"]
+
+[sub_resource type="Animation" id="Animation_8ys5p"]
+resource_name = "default"
+length = 2.0
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MarginContainer:modulate")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4yau7"]
+_data = {
+"default": SubResource("Animation_8ys5p")
+}
+
+[node name="TurnIndicator" type="CanvasLayer"]
+script = ExtResource("1_jqx2s")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(10, 10)
+
+[node name="Sprite2D" type="Sprite2D" parent="MarginContainer"]
+texture = ExtResource("1_kcnct")
+
+[node name="Control" type="Control" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/Control"]
+texture_filter = 1
+layout_mode = 0
+offset_left = -31.0
+offset_top = -6.1
+offset_right = 34.0
+offset_bottom = 16.9
+theme_override_fonts/font = ExtResource("2_45wqd")
+text = "PLAYER TURN"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MarginContainer"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_4yau7")
+}
+autoplay = "default"
