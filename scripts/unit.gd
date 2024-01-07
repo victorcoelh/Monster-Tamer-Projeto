@@ -5,10 +5,10 @@ extends Node2D
 ##
 ## Custom behavior should be implemented in the inheriting classes.
 
+signal unit_ended_turn()
+
 @export var max_hp := 10
-
 var unit_name := "Endrick"
-
 var hp := 10
 var attack := 8
 var speed := 5
@@ -16,11 +16,17 @@ var movement := 5
 var armor := 7
 
 var current_path := []
+var inactive = false
+const UNIT_GRAYSCALE = preload("res://graphics/shaders/unit_grayscale.gdshader")
 
 @onready var grid = $"../../BattleLogic/Grid"
 @onready var event_bus = $"../../EventBus"
 @onready var health_bar = $HealthBar
+@onready var sprite_2d = $Sprite2D
+@onready var animation_player = $AnimationPlayer
 
+func _ready():
+	event_bus.actor_ended_turn.connect(_on_event_bus_actor_turn_ended)
 
 func _process(_delta):
 	if current_path.is_empty():
@@ -33,7 +39,8 @@ func _process(_delta):
 		current_path.pop_front()
 	
 	if current_path.is_empty():
-		event_bus.unit_ended_turn.emit()
+		unit_ended_turn.emit()
+		turn_inactive()
 
 func basic_attack(enemy: BaseUnit):
 	enemy.hp -= attack
@@ -51,3 +58,19 @@ func basic_attack_range(current_pos: Vector2i) -> Array[Vector2i]:
 
 func follow_path(path: Array[Vector2i]):
 	current_path = path
+
+func turn_inactive():
+	var shader_material = ShaderMaterial.new()
+	shader_material.shader = UNIT_GRAYSCALE
+	sprite_2d.material = shader_material
+	
+	inactive = true
+	animation_player.stop()
+
+func awake():
+	sprite_2d.material = null
+	inactive = false
+	animation_player.play("walking")
+
+func _on_event_bus_actor_turn_ended():
+	awake()
