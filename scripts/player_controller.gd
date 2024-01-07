@@ -3,13 +3,16 @@ extends Node2D
 @onready var grid = $"../BattleLogic/Grid"
 @onready var event_bus = $"../EventBus"
 
+@onready var wind_slash = preload('res://scripts/wind_slash.gd')
+
 enum PlayerState {
-	SELECTING_TROOP, # 0
-	SELECTING_MOVEMENT, # 1
-	SELECTING_ACTION, # 2
-	SELECTING_TARGET, # 3
-	MOVING, # 4
-	IDLE # 5
+	SELECTING_TROOP, 
+	SELECTING_MOVEMENT,
+	SELECTING_ACTION, 
+	SELECTING_SKILL,
+	SELECTING_TARGET, 
+	MOVING,
+	IDLE
 }
 
 @onready var units = $"../Units".get_children()
@@ -17,20 +20,19 @@ enum PlayerState {
 var player_state = PlayerState.IDLE
 var current_unit: BaseUnit = null
 var current_position := Vector2i.ZERO
+var current_skill
+
 var target_position := Vector2i.ZERO
 var waiting = false
 
 var RANGE = 4
-var draw_pos = []
-var square_color: Color
-var texture = preload("res://graphics/UI/pos_indicator.png")
-
 
 func _ready():
 	pass
 
 func _process(_delta):
-	handle_player_input()
+	if not waiting:
+		handle_player_input()
 
 #region Player Turn Control
 func handle_player_input():
@@ -44,6 +46,8 @@ func handle_player_input():
 			player_selecting_movement()
 		PlayerState.SELECTING_ACTION:
 			await player_selecting_action()
+		PlayerState.SELECTING_SKILL:
+			await player_selecting_skill()
 		PlayerState.SELECTING_TARGET:
 			player_selecting_target()
 		PlayerState.MOVING:
@@ -56,14 +60,14 @@ func player_selecting_troop():
 	if Input.is_action_just_released("Select"):
 		get_unit_at_mouse_position()
 		var positions = grid.tiles_in_counted_range(current_position, 4)
-		draw_positions(positions)
+		grid.draw_positions(positions)
 		player_state = PlayerState.SELECTING_MOVEMENT
 
 func player_selecting_movement():
 	if Input.is_action_just_released("Select"):
 		target_position = grid.get_cell_at_mouse_position()
 		
-		if target_position not in draw_pos:
+		if target_position not in grid.draw_pos:
 			print("Out of range")
 			return
 	
@@ -71,35 +75,47 @@ func player_selecting_movement():
 		player_state = PlayerState.SELECTING_ACTION
 
 func player_selecting_action():
+	waiting = true
 	var selected_action = await event_bus.action_selected
-	undraw_positions()
+	waiting = false
+	
+	grid.undraw_positions()
 	
 	if selected_action[0] == "base_attack":
 		player_state = PlayerState.SELECTING_TARGET
 		var positions = selected_action[1]
-		draw_positions(positions, Color(1, 0, 0, 1))
+		grid.draw_positions(positions, Color(1, 0, 0, 1))
+		current_skill = current_unit.basic_attack
 		
 		waiting = true
 		await get_tree().create_timer(0.05).timeout
 		waiting = false
 	
 	if selected_action[0] == "wait":
-		print("Andando")
 		player_state = PlayerState.MOVING
+	if selected_action[0] == "skills":
+		event_bus.unit_selecting_skills.emit(current_unit)
+		player_state = PlayerState.SELECTING_SKILL
+		
+func player_selecting_skill():
+	var skill: Skill = await event_bus.skill_selected
+	current_skill = skill
+	
+	var positions = skill.skill_range(target_position)
+	grid.draw_positions(positions, Color(1, 0, 0, 1))
+	
+	player_state = PlayerState.SELECTING_TARGET
+	
+	waiting = true
+	await get_tree().create_timer(0.20).timeout
+	waiting = false
 
 func player_selecting_target():
 	if Input.is_action_just_released("Select") and not waiting:
-		var selected_position = grid.get_cell_at_mouse_position()
-		var selected_unit = grid.get_at(selected_position)
-		
-		if selected_position not in draw_pos:
-			print("Out of range")
-			return
-		
-		if selected_unit is BaseUnit:
-			event_bus.unit_attacked.emit(current_unit, selected_unit, current_unit.basic_attack)
+			current_skill.skill_handler(target_position)
+			
 			player_state = PlayerState.MOVING
-			undraw_positions()
+			grid.undraw_positions()
 
 func player_moving():
 	var path = grid.get_movement_path(current_position, target_position)
@@ -119,21 +135,7 @@ func get_unit_at_mouse_position() -> Vector2i:
 	return selected_position
 #endregion
 
-#region Movement Drawing
-func draw_positions(positions: Array[Vector2i], color := Color(1, 1, 1, 1)):
-	draw_pos = positions
-	square_color = color
-	queue_redraw()
 
-func undraw_positions():
-	draw_pos = []
-	queue_redraw()
-
-func _draw():
-	for pos in draw_pos:
-		var global_pos = grid.cell_to_global_position(pos)
-		draw_texture(texture, global_pos - Vector2(16, 16), square_color)
-#endregion
 
 func toggle_hp_bars():
 	for unit: BaseUnit in units:

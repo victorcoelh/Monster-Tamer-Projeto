@@ -10,6 +10,8 @@ var yuri_alberto_data: UnitData
 var player_scene = load("res://scenes/player_unit.tscn")
 var enemy_scene = load("res://scenes/enemy_unit.tscn")
 
+var wind_slash = load("res://scripts/wind_slash.gd")
+
 enum UnitType {
 	PLAYER,
 	ENEMY
@@ -17,16 +19,16 @@ enum UnitType {
 
 func _ready():
 	# Mock endrick
-	endrick_data = UnitData.new("Endrick M",12,12,12,12,12)
+	endrick_data = UnitData.new("Endrick M",12,12,12,12,12,[])
 	
 	# Mock Y. Alberto
-	yuri_alberto_data = UnitData.new("Yuri Alberto M",24,24,24,24,24)
+	yuri_alberto_data = UnitData.new("Yuri Alberto M",24,24,24,24,24,[wind_slash])
 	
-	instantiate_unit(endrick_data,UnitType.PLAYER, Vector2i(10,10))
-	instantiate_unit(yuri_alberto_data, UnitType.ENEMY, Vector2i(11,11))
+	instantiate_unit(endrick_data, UnitType.ENEMY, Vector2i(10,10))
+	instantiate_unit(endrick_data, UnitType.ENEMY, Vector2i(9,10))
+	instantiate_unit(endrick_data, UnitType.ENEMY, Vector2i(8,10))
 	
-	
-
+	instantiate_unit(yuri_alberto_data, UnitType.PLAYER, Vector2i(11,10))
 
 func instantiate_unit(unit_params:UnitData, unit_type: UnitType, pos: Vector2i):
 	var unit = get_unit_type(unit_type).instantiate()
@@ -54,6 +56,10 @@ func set_unit_params(unit:BaseUnit, params: UnitData):
 	unit.armor = params.armor
 	unit.speed = params.speed
 	unit.movement = params.movement
+	
+	for skill: Object in params.skills:
+		var new_skill: Skill = skill.new(unit)
+		unit.skills.append(new_skill)
 	
 
 	

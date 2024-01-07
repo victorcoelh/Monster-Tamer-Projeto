@@ -19,10 +19,10 @@ func _process(_delta):
 	if Input.is_action_just_released("Cancel"):
 		event_bus.player_turn_started.emit()
 
-func resolve_attack(attack: Callable, target_unit: BaseUnit):
+func resolve_attack(attack: Callable, target_unit: BaseUnit, attacker):
 	## Functinal based approach, which applies an attack function
 	## over one or more targets.
-	var damage: int = attack.call(target_unit)
+	var damage: int = attack.call(attacker, target_unit)
 	event_bus.unit_took_damage.emit(target_unit, damage) 
 	
 	var instance = explosion.instantiate()
@@ -33,4 +33,6 @@ func unit_has_range(unit_pos: Vector2i, target_pos: Vector2i):
 	return target_pos in attack_range
 
 func _on_event_bus_unit_attacked(attacker: BaseUnit, target: BaseUnit, attack: Callable):
-	resolve_attack(attack, target)
+	resolve_attack(attack, target, attacker)
+
+
