@@ -40,20 +40,6 @@ visible = false
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="Skill1" type="Button" parent="HBoxContainer/SkillsContainer"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_vxtks")
-theme_override_font_sizes/font_size = 48
-text = "Skill 1"
-metadata/_edit_use_anchors_ = true
-
-[node name="Skill2" type="Button" parent="HBoxContainer/SkillsContainer"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_vxtks")
-theme_override_font_sizes/font_size = 48
-text = "Skill 2"
-metadata/_edit_use_anchors_ = true
-
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/Attack" to="." method="_on_attack_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/Skills" to="." method="_on_skills_pressed"]
 [connection signal="pressed" from="HBoxContainer/VBoxContainer/Move" to="." method="_on_wait_pressed"]

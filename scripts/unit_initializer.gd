@@ -10,7 +10,9 @@ var yuri_alberto_data: UnitData
 var player_scene = load("res://scenes/player_unit.tscn")
 var enemy_scene = load("res://scenes/enemy_unit.tscn")
 
-var wind_slash = load("res://scripts/wind_slash.gd")
+var wind_slash = preload("res://scripts/wind_slash.gd")
+var whirlwind = preload("res://scripts/whirlwind.gd")
+var backstab = preload("res://scripts/backstab.gd")
 
 enum UnitType {
 	PLAYER,
@@ -22,10 +24,10 @@ func _ready():
 	endrick_data = UnitData.new("Endrick M",12,12,12,12,12,[])
 	
 	# Mock Y. Alberto
-	yuri_alberto_data = UnitData.new("Yuri Alberto M",24,24,24,24,24,[wind_slash])
+	yuri_alberto_data = UnitData.new("Yuri Alberto M",24,24,24,24,24,[wind_slash, whirlwind, backstab])
 	
 	instantiate_unit(endrick_data, UnitType.ENEMY, Vector2i(10,10))
-	instantiate_unit(endrick_data, UnitType.ENEMY, Vector2i(9,10))
+	#instantiate_unit(endrick_data, UnitType.ENEMY, Vector2i(9,10))
 	instantiate_unit(endrick_data, UnitType.ENEMY, Vector2i(8,10))
 	
 	instantiate_unit(yuri_alberto_data, UnitType.PLAYER, Vector2i(11,10))

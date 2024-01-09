@@ -36,6 +36,7 @@ func _process(_delta):
 		current_path.pop_front()
 	
 	if current_path.is_empty():
+		event_bus.unit_moved.emit()
 		event_bus.unit_ended_turn.emit()
 
 #func basic_attack(enemy: BaseUnit):
