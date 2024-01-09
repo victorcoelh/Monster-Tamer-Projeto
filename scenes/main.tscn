@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bxrvjw02uooh6"]
+[gd_scene load_steps=14 format=3 uid="uid://bxrvjw02uooh6"]
 
 [ext_resource type="Script" path="res://scripts/battle_camera.gd" id="1_yyg60"]
 [ext_resource type="Script" path="res://scripts/grid.gd" id="2_848uk"]
@@ -6,8 +6,6 @@
 [ext_resource type="Script" path="res://scripts/base_tile_map.gd" id="3_yw8ki"]
 [ext_resource type="Script" path="res://scripts/event_bus.gd" id="4_08abm"]
 [ext_resource type="Script" path="res://scripts/battle_controller.gd" id="6_chnpp"]
-[ext_resource type="PackedScene" uid="uid://brlvyppc05m5c" path="res://scenes/player_unit.tscn" id="6_rgara"]
-[ext_resource type="PackedScene" uid="uid://caeiehaxd7twj" path="res://scenes/enemy_unit.tscn" id="7_t0sgi"]
 [ext_resource type="PackedScene" uid="uid://eox0xlkp7ti4" path="res://scenes/battle_selection_menu.tscn" id="8_k0pav"]
 [ext_resource type="Script" path="res://scripts/unit_initializer.gd" id="9_4aop7"]
 [ext_resource type="Script" path="res://scripts/player_controller.gd" id="9_gu3ug"]
@@ -251,10 +249,6 @@ script = ExtResource("9_mi2tb")
 
 [node name="Units" type="Node2D" parent="."]
 
-[node name="PlayerUnit" parent="Units" instance=ExtResource("6_rgara")]
-
-[node name="EnemyUnit" parent="Units" instance=ExtResource("7_t0sgi")]
-
 [node name="UserInterface" type="Node2D" parent="."]
 
 [node name="BattleSelectionMenu" parent="UserInterface" instance=ExtResource("8_k0pav")]
@@ -262,7 +256,6 @@ visible = false
 
 [node name="UnitOverview" parent="UserInterface" instance=ExtResource("12_pd8h1")]
 visible = false
-
 
 [connection signal="actor_ended_turn" from="EventBus" to="BattleLogic/BattleController" method="_on_event_bus_actor_ended_turn"]
 [connection signal="enemy_turn_started" from="EventBus" to="EnemyController" method="_on_event_bus_enemy_turn_started"]

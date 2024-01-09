@@ -36,7 +36,7 @@ var square_texture = preload("res://graphics/UI/grid/pos_indicator.png")
 const MOVEMENT_INDICATOR = preload("res://scenes/movement_indicator.tscn")
 
 func _ready():
-	unit_amount = 4
+	unit_amount = 3
 
 func _process(_delta):
 	if not waiting:
@@ -161,6 +161,31 @@ func get_unit_at_mouse_position() -> bool:
 	
 	return false
 #endregion
+
+func draw_movement_indicators(positions: Array[Vector2i]):
+	if false in positions.map(func(x): return x in grid.draw_pos):
+		return
+	
+	for i in range(1, positions.size()):
+		var global_pos = grid.cell_to_global_position(positions[i])
+		var indicator := MOVEMENT_INDICATOR.instantiate()
+		indicator.global_position = global_pos
+		
+		if i == positions.size()-1:
+			indicator.set_indicator_rotation(positions[i] - positions[i-1])
+			indicator.set_indicator_type(indicator.ArrowType.END)
+		elif (positions[i+1] - positions[i-1]).length_squared() < 4:
+			indicator.set_indicator_rotation(positions[i+1] - positions[i], positions[i] - positions[i-1])
+			indicator.set_indicator_type(indicator.ArrowType.CORNER)
+		else:
+			indicator.set_indicator_rotation(positions[i+1] - positions[i])
+			indicator.set_indicator_type(indicator.ArrowType.STRAIGHT)
+		
+		add_child(indicator)
+
+func undraw_movement_indicators():
+	for child in get_children():
+		child.queue_free()
 
 func toggle_hp_bars():
 	for unit: BaseUnit in units:

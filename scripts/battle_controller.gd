@@ -66,7 +66,7 @@ func unit_has_range(unit_pos: Vector2i, target_pos: Vector2i):
 	return target_pos in attack_range
 
 func _on_event_bus_unit_attacked(attacker: BaseUnit, target: BaseUnit, attack: Callable):
-	resolve_attack(attack, target, atacker)
+	resolve_attack(attack, target, attacker)
 
 func _on_event_bus_actor_ended_turn():
 	waiting_turn_end = false
