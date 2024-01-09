@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b3n35mfy3wf27"
-path="res://.godot/imported/TX Props.png-9b386e287dca129d136b637bd1443f0c.ctex"
+uid="uid://cmlhitjpj5xur"
+path="res://.godot/imported/grid_tile.png-7e4ec2f74b60802f7d03a7f3ee20c2c1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/tilesets/TX Props.png"
-dest_files=["res://.godot/imported/TX Props.png-9b386e287dca129d136b637bd1443f0c.ctex"]
+source_file="res://graphics/UI/grid/grid_tile.png"
+dest_files=["res://.godot/imported/grid_tile.png-7e4ec2f74b60802f7d03a7f3ee20c2c1.ctex"]
 
 [params]
 

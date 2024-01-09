@@ -48,7 +48,8 @@ func initialize_grid():
 		grid.append(row)
 
 func add_to_grid(object: Object, relative_pos: Vector2i):
-	grid[relative_pos.x][relative_pos.y] = object
+	set_at(object, relative_pos)
+	astar_grid.set_point_solid(relative_pos)
 
 	var object_new_position: Vector2 = cell_to_global_position(relative_pos)
 	object.global_position = object_new_position
@@ -83,6 +84,9 @@ func grid_move(initial_pos: Vector2i, final_pos: Vector2i):
 		var unit = get_at(initial_pos)
 		set_at(unit,final_pos)
 		set_at(null, initial_pos)
+		
+		astar_grid.set_point_solid(final_pos, true)
+		astar_grid.set_point_solid(initial_pos, false)
 
 func setup_astar():
 	astar_grid = AStarGrid2D.new()

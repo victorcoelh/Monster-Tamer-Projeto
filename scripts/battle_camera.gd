@@ -13,7 +13,6 @@ var speed: float = 0
 var elapsed_time = 0
 
 
-
 func _ready():
 	camera_size = get_viewport().size / 2
 	lower_bounds *= grid.cell_size
@@ -54,6 +53,3 @@ func move_camera(delta):
 	
 	global_position.x = clamp(new_position.x, lower_bounds.x, upper_bounds.x - camera_size.x)
 	global_position.y = clamp(new_position.y, lower_bounds.y, upper_bounds.y - camera_size.y)
-
-
-	

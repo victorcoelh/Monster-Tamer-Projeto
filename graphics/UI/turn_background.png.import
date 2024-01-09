@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c3ndeleaola4q"
-path="res://.godot/imported/pos_indicator.png-bc3f22cc2d42fcb995b080d9277b1f79.ctex"
+uid="uid://bxm0wn228gi88"
+path="res://.godot/imported/turn_background.png-516a51d88e5f25622b9c5cde6c5e0dab.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/UI/pos_indicator.png"
-dest_files=["res://.godot/imported/pos_indicator.png-bc3f22cc2d42fcb995b080d9277b1f79.ctex"]
+source_file="res://graphics/UI/turn_background.png"
+dest_files=["res://.godot/imported/turn_background.png-516a51d88e5f25622b9c5cde6c5e0dab.ctex"]
 
 [params]
 

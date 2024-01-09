@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d0ykp1tq5smde"
-path="res://.godot/imported/TX Tileset Grass.png-1aa29e3fca6478bb3a621ed6c4eb97e5.ctex"
+uid="uid://bmpa78cxlpci1"
+path="res://.godot/imported/movement_arrow.png-e2226f3566ac1b49649dc49f94cc4ba7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/tilesets/TX Tileset Grass.png"
-dest_files=["res://.godot/imported/TX Tileset Grass.png-1aa29e3fca6478bb3a621ed6c4eb97e5.ctex"]
+source_file="res://graphics/UI/grid/movement_arrow.png"
+dest_files=["res://.godot/imported/movement_arrow.png-e2226f3566ac1b49649dc49f94cc4ba7.ctex"]
 
 [params]
 

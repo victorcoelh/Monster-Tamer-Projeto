@@ -12,23 +12,31 @@ enum PlayerState {
 	SELECTING_SKILL,
 	SELECTING_TARGET, 
 	MOVING,
-	IDLE
+	IDLE,
+  WAITING
 }
 
 @onready var units = $"../Units".get_children()
 
-var player_state = PlayerState.IDLE
+var player_state = PlayerState.WAITING
 var current_unit: BaseUnit = null
 var current_position := Vector2i.ZERO
 var current_skill
 
 var target_position := Vector2i.ZERO
+var moved_units := 0
+var unit_amount: int
 var waiting = false
 
 var RANGE = 4
 
+var draw_pos = []
+var square_color: Color
+var square_texture = preload("res://graphics/UI/grid/pos_indicator.png")
+const MOVEMENT_INDICATOR = preload("res://scenes/movement_indicator.tscn")
+
 func _ready():
-	pass
+	unit_amount = 4
 
 func _process(_delta):
 	if not waiting:
@@ -53,24 +61,40 @@ func handle_player_input():
 		PlayerState.MOVING:
 			player_moving()
 		PlayerState.IDLE:
+			await current_unit.unit_ended_turn
+			player_state = PlayerState.SELECTING_TROOP
+			
+			if moved_units == unit_amount:
+				await get_tree().create_timer(0.5).timeout
+				event_bus.actor_ended_turn.emit()
+				player_state = PlayerState.WAITING
+				moved_units = 0
+		PlayerState.WAITING:
 			await event_bus.player_turn_started
 			player_state = PlayerState.SELECTING_TROOP
+			
+
 
 func player_selecting_troop():
 	if Input.is_action_just_released("Select"):
-		get_unit_at_mouse_position()
-		var positions = grid.tiles_in_counted_range(current_position, 4)
-		grid.draw_positions(positions)
-		player_state = PlayerState.SELECTING_MOVEMENT
+		if get_unit_at_mouse_position():
+			var positions = grid.tiles_in_counted_range(current_position, 4)
+			grid.draw_positions(positions)
+			player_state = PlayerState.SELECTING_MOVEMENT
+
 
 func player_selecting_movement():
+	var mouse_path = grid.get_movement_path(current_position, grid.get_cell_at_mouse_position())
+	undraw_movement_indicators()
+	draw_movement_indicators(mouse_path)
+	
 	if Input.is_action_just_released("Select"):
 		target_position = grid.get_cell_at_mouse_position()
 		
 		if target_position not in grid.draw_pos:
 			print("Out of range")
 			return
-	
+		
 		event_bus.player_moved.emit(target_position)
 		player_state = PlayerState.SELECTING_ACTION
 
@@ -121,21 +145,22 @@ func player_moving():
 	var path = grid.get_movement_path(current_position, target_position)
 	grid.grid_move(current_position, target_position)
 	current_unit.follow_path(path)
+	
 	player_state = PlayerState.IDLE
+	moved_units += 1
+	undraw_movement_indicators()
 
-func get_unit_at_mouse_position() -> Vector2i:
+func get_unit_at_mouse_position() -> bool:
 	var selected_position = grid.get_cell_at_mouse_position()
 	var selected_unit = grid.get_at(selected_position)
 	
-	if selected_unit is BaseUnit:
-		print("Selected Unit")
+	if selected_unit is BaseUnit and not selected_unit.inactive:
 		current_position = selected_position
 		current_unit = selected_unit
+		return true
 	
-	return selected_position
+	return false
 #endregion
-
-
 
 func toggle_hp_bars():
 	for unit: BaseUnit in units:

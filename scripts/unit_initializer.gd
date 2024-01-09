@@ -26,11 +26,11 @@ func _ready():
 	# Mock Y. Alberto
 	yuri_alberto_data = UnitData.new("Yuri Alberto M",24,24,24,24,24,[wind_slash, whirlwind, backstab])
 	
-	instantiate_unit(endrick_data, UnitType.ENEMY, Vector2i(10,10))
-	#instantiate_unit(endrick_data, UnitType.ENEMY, Vector2i(9,10))
-	instantiate_unit(endrick_data, UnitType.ENEMY, Vector2i(8,10))
-	
 	instantiate_unit(yuri_alberto_data, UnitType.PLAYER, Vector2i(11,10))
+	
+	instantiate_unit(endrick_data,UnitType.PLAYER, Vector2i(10,10))
+	instantiate_unit(yuri_alberto_data, UnitType.ENEMY, Vector2i(11,11))
+
 
 func instantiate_unit(unit_params:UnitData, unit_type: UnitType, pos: Vector2i):
 	var unit = get_unit_type(unit_type).instantiate()
@@ -66,3 +66,4 @@ func set_unit_params(unit:BaseUnit, params: UnitData):
 
 	
 	
+
