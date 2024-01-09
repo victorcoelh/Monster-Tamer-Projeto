@@ -15,6 +15,9 @@ var speed := 5
 var movement := 5
 var armor := 7
 
+var basic_attack = BasicAttack.new(self)
+var skills: Array[Skill] = []
+
 var current_path := []
 var inactive = false
 const UNIT_GRAYSCALE = preload("res://graphics/shaders/unit_grayscale.gdshader")
@@ -39,22 +42,36 @@ func _process(_delta):
 		current_path.pop_front()
 	
 	if current_path.is_empty():
+		event_bus.unit_moved.emit()
+
 		unit_ended_turn.emit()
 		turn_inactive()
 
-func basic_attack(enemy: BaseUnit):
-	enemy.hp -= attack
-	print(str(enemy.hp) + "/" + str(enemy.max_hp))
-	return attack
+#func basic_attack(enemy: BaseUnit):
+	#enemy.hp -= attack
+	#print(str(enemy.hp) + "/" + str(enemy.max_hp))
+	#return attack
+#
+#func basic_attack_range(current_pos: Vector2i) -> Array[Vector2i]:
+	#var positions: Array[Vector2i] = [
+		#Vector2i(current_pos.x - 1, current_pos.y),
+		#Vector2i(current_pos.x + 1, current_pos.y),
+		#Vector2i(current_pos.x, current_pos.y + 1),
+		#Vector2i(current_pos.x, current_pos.y - 1),
+	#]
+	#return positions
+#
+#func basic_attack_handler():
+	#var selected_position = grid.get_cell_at_mouse_position()
+	#var selected_unit = grid.get_at(selected_position)
+	#
+	#if selected_position not in grid.draw_pos:
+		#print("Out of range")
+		#return
+	#
+	#if selected_unit is BaseUnit:
+		#event_bus.unit_attacked.emit(self, selected_unit, basic_attack)
 
-func basic_attack_range(current_pos: Vector2i) -> Array[Vector2i]:
-	var positions: Array[Vector2i] = [
-		Vector2i(current_pos.x - 1, current_pos.y),
-		Vector2i(current_pos.x + 1, current_pos.y),
-		Vector2i(current_pos.x, current_pos.y + 1),
-		Vector2i(current_pos.x, current_pos.y - 1),
-	]
-	return positions
 
 func follow_path(path: Array[Vector2i]):
 	current_path = path

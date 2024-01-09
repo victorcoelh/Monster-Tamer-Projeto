@@ -263,10 +263,13 @@ visible = false
 [node name="UnitOverview" parent="UserInterface" instance=ExtResource("12_pd8h1")]
 visible = false
 
+
 [connection signal="actor_ended_turn" from="EventBus" to="BattleLogic/BattleController" method="_on_event_bus_actor_ended_turn"]
 [connection signal="enemy_turn_started" from="EventBus" to="EnemyController" method="_on_event_bus_enemy_turn_started"]
 [connection signal="player_moved" from="EventBus" to="UserInterface/BattleSelectionMenu" method="_on_event_bus_player_moved"]
 [connection signal="player_turn_started" from="EventBus" to="PlayerController" method="_on_event_bus_player_turn_started"]
+[connection signal="skill_selected" from="EventBus" to="UserInterface/BattleSelectionMenu" method="_on_event_bus_skill_selected"]
 [connection signal="unit_attacked" from="EventBus" to="BattleLogic/BattleController" method="_on_event_bus_unit_attacked"]
+[connection signal="unit_selecting_skills" from="EventBus" to="UserInterface/BattleSelectionMenu" method="_on_event_bus_unit_selecting_skills"]
 [connection signal="open_battle_menu" from="BattleLogic/BattleController" to="UserInterface/BattleSelectionMenu" method="_on_battle_controller_open_battle_menu"]
 [connection signal="select_attack_target" from="BattleLogic/BattleController" to="UserInterface/BattleSelectionMenu" method="_on_battle_controller_select_attack_target"]

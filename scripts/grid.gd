@@ -11,6 +11,9 @@ var final_position = null
 var selected_unit
 var path: Array[Vector2i]
 var moving = false
+var draw_pos = []
+var square_color: Color
+var texture = preload("res://graphics/UI/pos_indicator.png")
 
 @onready var units = $"../../Units"
 @onready var base_tile_map = $"../../BaseTileMap"
@@ -33,6 +36,7 @@ func _process(_delta):
 func _draw():
 	draw_grid_lines()
 	draw_debug_points()
+	draw_move_squares()
 
 #region Grid Control
 func initialize_grid():
@@ -180,6 +184,24 @@ func draw_debug_points():
 
 func draw_point(x: float, y: float, color):
 	draw_rect(Rect2(x-4,y-4,8,8), color)
+#endregion
+
+#region Movement Drawing
+func draw_positions(positions: Array[Vector2i], color := Color(1, 1, 1, 1)):
+	draw_pos = positions
+	square_color = color
+	queue_redraw()
+
+func undraw_positions():
+	draw_pos = []
+	queue_redraw()
+
+func draw_move_squares():
+		for pos in draw_pos:
+			var global_pos = cell_to_global_position(pos)
+			draw_texture(texture, global_pos - Vector2(16, 16), square_color)
+
+
 #endregion
 
 ## Class used to serve as a representation of possible obstacles on the grid,
