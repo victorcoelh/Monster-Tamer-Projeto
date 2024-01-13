@@ -4,9 +4,8 @@ extends CanvasLayer
 @onready var unit_movement_label = $UnitMovement/UnitMovement
 @onready var unit_attack_label = $UnitAttack/UnitAttack
 @onready var unit_speed_label = $UnitSpeed/UnitSpeed
-@onready var unit_armor_label = $UnitArmor/UnitArmor
+@onready var unit_defense_label = $UnitDefense/UnitDefense
 @onready var unit_hp_label = $UnitHP/UnitHP
-
 @onready var health_bar = $HealthBar
 
 @onready var player_controller = $"../../PlayerController"
@@ -38,7 +37,7 @@ func set_label_text():
 	unit_movement_label.text = str(current_unit.movement)
 	unit_speed_label.text = str(current_unit.speed)
 	unit_attack_label.text = str(current_unit.attack)
-	unit_armor_label.text = str(current_unit.armor)
+	unit_defense_label.text = str(current_unit.defense)
 	unit_hp_label.text = str(current_unit.hp) + "/" + str(current_unit.max_hp)
 
 func set_health_bar_value():

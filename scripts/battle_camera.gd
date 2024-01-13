@@ -11,6 +11,7 @@ var camera_size: Vector2i
 var direction = Vector2.ZERO
 var speed: float = 0
 var elapsed_time = 0
+var should_check_mouse = true
 
 
 func _ready():
@@ -19,7 +20,7 @@ func _ready():
 	upper_bounds *= grid.cell_size
 
 func _process(delta):
-	if is_mouse_close_to_border():
+	if is_mouse_close_to_border() and should_check_mouse:
 		move_camera(delta)
 	else:
 		speed = 0
@@ -53,3 +54,9 @@ func move_camera(delta):
 	
 	global_position.x = clamp(new_position.x, lower_bounds.x, upper_bounds.x - camera_size.x)
 	global_position.y = clamp(new_position.y, lower_bounds.y, upper_bounds.y - camera_size.y)
+
+func _notification(what):
+	if what == NOTIFICATION_WM_MOUSE_ENTER:
+		should_check_mouse = true
+	elif what == NOTIFICATION_WM_MOUSE_EXIT:
+		should_check_mouse = false

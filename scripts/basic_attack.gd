@@ -5,11 +5,10 @@ func _init(unit: BaseUnit):
 	self.skill_name = "Attack"
 	self.unit = unit
 
-
-func use_skill(atacker:BaseUnit, target: BaseUnit):
-	target.hp -= atacker.attack
+func use_skill(attacker:BaseUnit, target: BaseUnit):
+	var dmg = resolve_damage(attacker, target, 1)
 	print(str(target.hp) + "/" + str(target.max_hp))
-	return atacker.attack
+	return dmg
 
 func skill_range(current_pos: Vector2i) -> Array[Vector2i]:
 	var positions: Array[Vector2i] = [
