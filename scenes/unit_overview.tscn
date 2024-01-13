@@ -103,7 +103,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="UnitArmor" type="Control" parent="."]
+[node name="UnitDefense" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_left = 9.0
@@ -112,7 +112,7 @@ offset_right = 9.0
 offset_bottom = 7.0
 scale = Vector2(0.25, 0.25)
 
-[node name="UnitArmor" type="Label" parent="UnitArmor"]
+[node name="UnitDefense" type="Label" parent="UnitDefense"]
 self_modulate = Color(0, 0, 0, 1)
 layout_mode = 0
 offset_right = 41.0

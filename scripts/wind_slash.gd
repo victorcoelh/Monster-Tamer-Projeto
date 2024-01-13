@@ -4,10 +4,10 @@ func _init(unit: BaseUnit):
 	self.skill_name = "Wind slash"
 	self.unit = unit
 
-func use_skill(atacker:BaseUnit, target: BaseUnit):
-	target.hp -= floor(0.75 * atacker.attack)
+func use_skill(attacker:BaseUnit, target: BaseUnit):
+	var dmg = resolve_damage(attacker, target, 1)
 	print(str(target.hp) + "/" + str(target.max_hp))
-	return atacker.attack
+	return dmg
 
 func skill_range(current_pos: Vector2i) -> Array[Vector2i]:
 	var positions: Array[Vector2i] = []
@@ -34,7 +34,7 @@ func skill_handler(desired_pos: Vector2i):
 		
 	for target:EnemyUnit in targets:
 		self.unit.event_bus.unit_attacked.emit(self.unit, target, use_skill)
-	
+
 func get_direction_targets(selected_position: Vector2i, desired_pos: Vector2i) -> Array[EnemyUnit]:
 	var WEST = selected_position.x < desired_pos.x
 	if WEST:
@@ -49,7 +49,6 @@ func get_direction_targets(selected_position: Vector2i, desired_pos: Vector2i) -
 		return get_targets(func (pos): return pos.y < desired_pos.y, desired_pos)
 	
 	return get_targets(func (pos): return pos.y > desired_pos.y, desired_pos)
-	
 
 func get_targets(filter_callback: Callable, desired_pos: Vector2i) -> Array[EnemyUnit]:
 	var targets_pos = skill_range(desired_pos).filter(filter_callback)
@@ -63,6 +62,3 @@ func get_targets(filter_callback: Callable, desired_pos: Vector2i) -> Array[Enem
 	
 	print(targets)
 	return targets
-		
-
-

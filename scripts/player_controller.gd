@@ -6,14 +6,13 @@ extends Node2D
 @onready var wind_slash = preload('res://scripts/wind_slash.gd')
 
 enum PlayerState {
-	SELECTING_TROOP, 
+	SELECTING_TROOP,
 	SELECTING_MOVEMENT,
-	SELECTING_ACTION, 
+	SELECTING_ACTION,
 	SELECTING_SKILL,
-	SELECTING_TARGET, 
-	MOVING,
+	SELECTING_TARGET,
 	IDLE,
-  WAITING
+	WAITING
 }
 
 @onready var units = $"../Units".get_children()
@@ -21,7 +20,7 @@ enum PlayerState {
 var player_state = PlayerState.WAITING
 var current_unit: BaseUnit = null
 var current_position := Vector2i.ZERO
-var current_skill
+var current_skill: Skill
 
 var target_position := Vector2i.ZERO
 var moved_units := 0
@@ -39,7 +38,7 @@ func _ready():
 	unit_amount = 3
 
 func _process(_delta):
-	if not waiting:
+	if not waiting and is_mouse_within_grid():
 		handle_player_input()
 
 #region Player Turn Control
@@ -58,10 +57,8 @@ func handle_player_input():
 			await player_selecting_skill()
 		PlayerState.SELECTING_TARGET:
 			player_selecting_target()
-		PlayerState.MOVING:
-			player_moving()
 		PlayerState.IDLE:
-			await current_unit.unit_ended_turn
+			await event_bus.unit_ended_turn
 			player_state = PlayerState.SELECTING_TROOP
 			
 			if moved_units == unit_amount:
@@ -72,8 +69,6 @@ func handle_player_input():
 		PlayerState.WAITING:
 			await event_bus.player_turn_started
 			player_state = PlayerState.SELECTING_TROOP
-			
-
 
 func player_selecting_troop():
 	if Input.is_action_just_released("Select"):
@@ -81,7 +76,6 @@ func player_selecting_troop():
 			var positions = grid.tiles_in_counted_range(current_position, 4)
 			grid.draw_positions(positions)
 			player_state = PlayerState.SELECTING_MOVEMENT
-
 
 func player_selecting_movement():
 	var mouse_path = grid.get_movement_path(current_position, grid.get_cell_at_mouse_position())
@@ -104,6 +98,7 @@ func player_selecting_action():
 	waiting = false
 	
 	grid.undraw_positions()
+	move_player()
 	
 	if selected_action[0] == "base_attack":
 		player_state = PlayerState.SELECTING_TARGET
@@ -115,8 +110,6 @@ func player_selecting_action():
 		await get_tree().create_timer(0.05).timeout
 		waiting = false
 	
-	if selected_action[0] == "wait":
-		player_state = PlayerState.MOVING
 	if selected_action[0] == "skills":
 		event_bus.unit_selecting_skills.emit(current_unit)
 		player_state = PlayerState.SELECTING_SKILL
@@ -136,12 +129,11 @@ func player_selecting_skill():
 
 func player_selecting_target():
 	if Input.is_action_just_released("Select") and not waiting:
+			player_state = PlayerState.IDLE
 			current_skill.skill_handler(target_position)
-			
-			player_state = PlayerState.MOVING
 			grid.undraw_positions()
 
-func player_moving():
+func move_player():
 	var path = grid.get_movement_path(current_position, target_position)
 	grid.grid_move(current_position, target_position)
 	current_unit.follow_path(path)
@@ -162,11 +154,12 @@ func get_unit_at_mouse_position() -> bool:
 	return false
 #endregion
 
+#region Indicator Drawing
 func draw_movement_indicators(positions: Array[Vector2i]):
 	if false in positions.map(func(x): return x in grid.draw_pos):
 		return
 	
-	for i in range(1, positions.size()):
+	for i in range(0, positions.size()):
 		var global_pos = grid.cell_to_global_position(positions[i])
 		var indicator := MOVEMENT_INDICATOR.instantiate()
 		indicator.global_position = global_pos
@@ -174,6 +167,9 @@ func draw_movement_indicators(positions: Array[Vector2i]):
 		if i == positions.size()-1:
 			indicator.set_indicator_rotation(positions[i] - positions[i-1])
 			indicator.set_indicator_type(indicator.ArrowType.END)
+		elif i == 0:
+			indicator.set_indicator_rotation(positions[i+1] - positions[i])
+			indicator.set_indicator_type(indicator.ArrowType.START)
 		elif (positions[i+1] - positions[i-1]).length_squared() < 4:
 			indicator.set_indicator_rotation(positions[i+1] - positions[i], positions[i] - positions[i-1])
 			indicator.set_indicator_type(indicator.ArrowType.CORNER)
@@ -186,6 +182,19 @@ func draw_movement_indicators(positions: Array[Vector2i]):
 func undraw_movement_indicators():
 	for child in get_children():
 		child.queue_free()
+#endregion
+
+func is_mouse_within_grid():
+	var mouse_pos = get_global_mouse_position()
+	var first_pos = grid.cell_to_global_position(Vector2(0, 0))
+	var final_pos = grid.cell_to_global_position(grid.size)
+	
+	if mouse_pos.x < first_pos.x or mouse_pos.y < first_pos.y:
+		return false
+	elif mouse_pos.x > final_pos.x or mouse_pos.y > final_pos.y:
+		return false
+	else:
+		return true
 
 func toggle_hp_bars():
 	for unit: BaseUnit in units:

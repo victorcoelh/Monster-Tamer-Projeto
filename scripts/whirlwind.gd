@@ -4,10 +4,10 @@ func _init(unit: BaseUnit):
 	self.skill_name = "Whirlwind"
 	self.unit = unit
 
-func use_skill(atacker:BaseUnit, target: BaseUnit):
-	target.hp -= floor(0.75 * atacker.attack)
+func use_skill(attacker:BaseUnit, target: BaseUnit):
+	var dmg = resolve_damage(attacker, target, 1)
 	print(str(target.hp) + "/" + str(target.max_hp))
-	return atacker.attack
+	return dmg
 
 func skill_range(current_pos: Vector2i) -> Array[Vector2i]:
 	var positions: Array[Vector2i] = [
@@ -28,6 +28,3 @@ func skill_handler(desired_pos: Vector2i):
 		if self.unit.grid.get_at(pos) is EnemyUnit:
 			var target: EnemyUnit = self.unit.grid.get_at(pos)
 			self.unit.event_bus.unit_attacked.emit(self.unit, target, use_skill)
-			
-	
-
