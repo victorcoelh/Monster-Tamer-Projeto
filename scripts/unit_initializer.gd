@@ -44,7 +44,7 @@ func get_unit_type(type: UnitType):
 	return enemy_scene
 
 func move_unit_to_grid(unit, pos:Vector2i):
-	grid.set_at(unit, pos)
+	grid.add_to_grid(unit, pos)
 	
 	var unit_global_pos = grid.cell_to_global_position(pos)
 	unit.global_position = unit_global_pos
