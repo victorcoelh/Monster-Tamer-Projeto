@@ -113,28 +113,28 @@ func enemies_in_range(positions: Array[Vector2i]) -> Array[EnemyUnit]:
 	
 	return enemies
 
-func tiles_in_counted_range(initial_pos: Vector2i, tile_range: int):
-	# TODO: Implement a better algorithm. The one I implemented here is shit.
-	var possible_tiles: Array[Vector2i] = [initial_pos]
-	var current_pos: Vector2i
-	var diff: Vector2i
-	var dfs_queue = []
-	dfs_queue.append_array(get_neighbors(initial_pos))
+func tiles_in_counted_range(initial_pos: Vector2i, tile_range: int) -> Array[Vector2i]:
+	## Implements the DFS Algorithm on the grid, returning all cells
+	## within a given range of the initial cell.
+	var frontier: Array[Vector2i] = [initial_pos]
+	var output: Array[Vector2i] = [initial_pos]
+	var distances = {initial_pos: 0}
 	
-	while not dfs_queue.is_empty():
-		current_pos = dfs_queue.pop_front()
-		diff = current_pos - initial_pos
+	while not frontier.is_empty():
+		var current = frontier.pop_front()
+		var at_limit = distances[current] == tile_range
+		var not_empty = get_at(current) != null
+		var is_initial = current == initial_pos # initial_pos is a special case
 		
-		if current_pos.x >= size.x or current_pos.y >= size.y or current_pos.x < 0 or current_pos.y < 0:
+		if at_limit or not_empty and not is_initial:
 			continue
 		
-		if abs(diff.x) + abs(diff.y) <= tile_range and current_pos not in possible_tiles and get_at(current_pos) == null:
-			possible_tiles.append(current_pos)
-			
-			for neighbor in get_neighbors(current_pos):
-				if neighbor not in dfs_queue:
-					dfs_queue.append(neighbor)
-	return possible_tiles
+		for neighbor in get_neighbors(current):
+			if neighbor not in distances:
+				frontier.append(neighbor)
+				output.append(neighbor)
+				distances[neighbor] = distances[current] + 1
+	return output
 
 func get_neighbors(tile_position: Vector2i):
 	return [tile_position + Vector2i(0, -1),
@@ -196,8 +196,6 @@ func draw_move_squares():
 		for pos in draw_pos:
 			var global_pos = cell_to_global_position(pos)
 			draw_texture(texture, global_pos - Vector2(16, 16), square_color)
-
-
 #endregion
 
 ## Class used to serve as a representation of possible obstacles on the grid,
