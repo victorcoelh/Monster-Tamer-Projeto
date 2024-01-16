@@ -1,5 +1,7 @@
 extends Skill 
 
+const BACKSTAB_ANIM = preload("res://scenes/backstab_anim.tscn")
+
 func _init(unit: BaseUnit):
 	self.skill_name = "Backstab"
 	self.unit = unit
@@ -26,19 +28,20 @@ func skill_handler(desired_pos:Vector2i):
 	if selected_position not in self.unit.grid.draw_pos:
 		print("Out of range")
 		return
-	
+		
 	if selected_unit is BaseUnit:	
 		var back_pos: Vector2i = get_back_pos(selected_position, desired_pos)
-	
-		await self.unit.event_bus.unit_moved
+		var blink: bool = false
 		
 		if self.unit.grid.get_at(back_pos) == null:
 			var current_pos: Vector2i = self.unit.grid.global_to_cell_position(self.unit.global_position)
 			self.unit.grid.grid_move(current_pos, back_pos)
 			self.unit.global_position = self.unit.grid.cell_to_global_position(back_pos)
+			blink = true
 		
+		self.create_animation(desired_pos, selected_position, blink)
 		self.unit.event_bus.unit_attacked.emit(self.unit, selected_unit, use_skill)
-
+ 
 func get_back_pos(selected_position: Vector2i, desired_pos:Vector2i) -> Vector2i:
 	if selected_position.y > desired_pos.y:
 		return selected_position + Vector2i(0,1)
@@ -50,3 +53,24 @@ func get_back_pos(selected_position: Vector2i, desired_pos:Vector2i) -> Vector2i
 		return selected_position + Vector2i(-1, 0)
 	
 	return Vector2i(0,0)
+
+func create_animation(attacker_pos: Vector2i, target_pos: Vector2i, blink: bool):
+	var direction: SkillDirection = self.skill_direction(attacker_pos, target_pos)
+	
+	var sprite_rotation: int
+	
+	match direction:
+		SkillDirection.WEST: sprite_rotation = -180
+		SkillDirection.EAST: sprite_rotation = 0
+		SkillDirection.NORTH: sprite_rotation = -90
+		SkillDirection.SOUTH: sprite_rotation = 90
+		
+	var skill_animation = BACKSTAB_ANIM.instantiate()
+	
+	if !blink:
+		var animation_player = skill_animation.get_child(1)
+		animation_player.play("no blink")
+		sprite_rotation += 180
+	
+	skill_animation.rotation_degrees = sprite_rotation
+	self.unit.add_child(skill_animation)

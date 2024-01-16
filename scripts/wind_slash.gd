@@ -1,5 +1,9 @@
 extends Skill
 
+const WIND_SLASH_ANIM = preload("res://scenes/wind_slash_anim.tscn")
+
+
+
 func _init(unit: BaseUnit):
 	self.skill_name = "Wind slash"
 	self.unit = unit
@@ -28,27 +32,30 @@ func skill_handler(desired_pos: Vector2i):
 		return
 	
 	var targets: Array[EnemyUnit] = get_direction_targets(selected_position,desired_pos)
-	
+
 	if targets.is_empty():
 		return
+		
+	self.create_animation(desired_pos, selected_position)
 		
 	for target:EnemyUnit in targets:
 		self.unit.event_bus.unit_attacked.emit(self.unit, target, use_skill)
 
 func get_direction_targets(selected_position: Vector2i, desired_pos: Vector2i) -> Array[EnemyUnit]:
-	var WEST = selected_position.x < desired_pos.x
-	if WEST:
-		return get_targets(func (pos): return pos.x < desired_pos.x, desired_pos)
-		
-	var EAST = selected_position.x > desired_pos.x
-	if EAST:
-		return get_targets(func (pos): return pos.x > desired_pos.x, desired_pos)
 	
-	var NORTH = selected_position.y < desired_pos.y
-	if NORTH:
-		return get_targets(func (pos): return pos.y < desired_pos.y, desired_pos)
+	var direction: SkillDirection = self.skill_direction(desired_pos, selected_position)
 	
-	return get_targets(func (pos): return pos.y > desired_pos.y, desired_pos)
+	match direction:
+		SkillDirection.WEST:
+			return get_targets(func (pos): return pos.x < desired_pos.x, desired_pos)
+		SkillDirection.EAST:
+			return get_targets(func (pos): return pos.x > desired_pos.x, desired_pos)
+		SkillDirection.NORTH:
+			return get_targets(func (pos): return pos.y < desired_pos.y, desired_pos)
+		SkillDirection.SOUTH:
+			return get_targets(func (pos): return pos.y > desired_pos.y, desired_pos)
+	
+	return []
 
 func get_targets(filter_callback: Callable, desired_pos: Vector2i) -> Array[EnemyUnit]:
 	var targets_pos = skill_range(desired_pos).filter(filter_callback)
@@ -62,3 +69,22 @@ func get_targets(filter_callback: Callable, desired_pos: Vector2i) -> Array[Enem
 	
 	print(targets)
 	return targets
+
+func create_animation(attacker_pos: Vector2i, target_pos: Vector2i):
+	var direction: SkillDirection = self.skill_direction(attacker_pos, target_pos)
+	
+	var sprite_rotation: int
+	
+	match direction:
+		SkillDirection.WEST: sprite_rotation = 0
+		SkillDirection.EAST: sprite_rotation = -180
+		SkillDirection.NORTH: sprite_rotation = 90
+		SkillDirection.SOUTH: sprite_rotation = -90
+			
+	
+	var skill_animation = WIND_SLASH_ANIM.instantiate()
+	skill_animation.rotation_degrees = sprite_rotation
+	
+	
+	self.unit.add_child(skill_animation)
+	

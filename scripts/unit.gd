@@ -18,6 +18,7 @@ const CRIT_MODIFIER = 2
 @onready var sprite_2d = $Sprite2D
 @onready var animation_player = $AnimationPlayer
 
+
 # unit parameters
 @export var max_hp := 10
 @export var max_sp := 10

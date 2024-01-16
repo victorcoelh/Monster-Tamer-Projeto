@@ -4,6 +4,8 @@ extends Node2D
 @onready var event_bus = $"../EventBus"
 
 @onready var wind_slash = preload('res://scripts/wind_slash.gd')
+@onready var skill_animation = $"../SkillAnimation"
+
 
 enum PlayerState {
 	SELECTING_TROOP,
@@ -131,6 +133,7 @@ func player_selecting_target():
 	if Input.is_action_just_released("Select") and not waiting:
 			player_state = PlayerState.IDLE
 			current_skill.skill_handler(target_position)
+				
 			grid.undraw_positions()
 
 func move_player():
