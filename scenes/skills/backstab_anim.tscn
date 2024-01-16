@@ -1,0 +1,116 @@
+[gd_scene load_steps=7 format=3 uid="uid://4uv3wnb6xkr1"]
+
+[ext_resource type="Script" path="res://scripts/skills/backstab_anim.gd" id="1_srnpt"]
+[ext_resource type="Texture2D" uid="uid://csexy147sua1u" path="res://graphics/skills/slash.png" id="2_arkae"]
+[ext_resource type="Texture2D" uid="uid://bnig7k7ple03x" path="res://graphics/skills/blink.png" id="3_8yj3s"]
+
+[sub_resource type="Animation" id="Animation_dxnq0"]
+resource_name = "default"
+length = 0.5
+step = 0.05
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Blink:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Slash:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="Animation" id="Animation_xila1"]
+resource_name = "no blink"
+length = 0.5
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Slash:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Blink:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, false]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ebvgb"]
+_data = {
+"default": SubResource("Animation_dxnq0"),
+"no blink": SubResource("Animation_xila1")
+}
+
+[node name="Backstab" type="Node2D"]
+script = ExtResource("1_srnpt")
+
+[node name="Slash" type="Sprite2D" parent="."]
+position = Vector2(-32, 0)
+texture = ExtResource("2_arkae")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ebvgb")
+}
+autoplay = "no blink"
+
+[node name="Blink" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(-64, 0)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_8yj3s")
