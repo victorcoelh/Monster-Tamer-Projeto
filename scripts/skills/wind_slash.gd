@@ -4,9 +4,9 @@ const WIND_SLASH_ANIM = preload("res://scenes/skills/wind_slash_anim.tscn")
 
 
 
-func _init(unit: BaseUnit):
+func _init(parent_unit: BaseUnit):
 	self.skill_name = "Wind slash"
-	self.unit = unit
+	self.unit = parent_unit
 
 func use_skill(attacker:BaseUnit, target: BaseUnit):
 	var dmg = resolve_damage(attacker, target, 1)
@@ -25,7 +25,6 @@ func skill_range(current_pos: Vector2i) -> Array[Vector2i]:
 
 func skill_handler(desired_pos: Vector2i):
 	var selected_position = self.unit.grid.get_cell_at_mouse_position()
-	var unit_position = self.unit.grid.global_to_cell_position(self.unit.global_position)
 	
 	if selected_position not in self.unit.grid.draw_pos:
 		print("Out of range")

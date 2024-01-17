@@ -1,11 +1,12 @@
 extends Skill 
 
+
 const BACKSTAB_ANIM = preload("res://scenes/skills/backstab_anim.tscn")
 
-func _init(unit: BaseUnit):
-	self.skill_name = "Backstab"
-	self.unit = unit
 
+func _init(parent_unit: BaseUnit):
+	self.skill_name = "Backstab"
+	self.unit = parent_unit
 
 func use_skill(atacker:BaseUnit, target: BaseUnit):
 	target.hp -= atacker.attack

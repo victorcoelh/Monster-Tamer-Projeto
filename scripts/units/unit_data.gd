@@ -11,6 +11,7 @@ var movement: int
 var skills: Array[Object]
 var unit_name: String
 
+@warning_ignore("shadowed_variable")
 func _init(unit_name: String, max_hp: int, max_sp: int, attack: int, defense: int,
 		   perception: int, speed: int, movement: int, skills: Array[Object]):
 	self.unit_name = unit_name

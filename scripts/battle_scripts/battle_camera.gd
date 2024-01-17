@@ -5,15 +5,15 @@ extends Camera2D
 @export var acceleration: float = 0.2
 @export var lower_bounds: Vector2 = Vector2i(-3, -3)
 @export var upper_bounds: Vector2 = Vector2i(25, 20)
-@onready var grid = $"../BattleLogic/Grid"
 
 var camera_size: Vector2i
-var direction = Vector2.ZERO
+var direction := Vector2.ZERO
 var speed: float = 0
-var elapsed_time = 0
-var should_check_mouse = true
-var slowing = false
+var elapsed_time := 0
+var should_check_mouse := true
+var slowing := false
 
+@onready var grid = $"../BattleLogic/Grid"
 
 func _ready():
 	camera_size = get_viewport().size / 2
@@ -21,6 +21,9 @@ func _ready():
 	upper_bounds *= grid.cell_size
 
 func _process(delta):
+	if speed > 3:
+		speed = 3
+	
 	if is_mouse_close_to_border() and should_check_mouse:
 		speedup_camera(delta)
 	else:

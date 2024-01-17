@@ -11,29 +11,23 @@ enum PlayerState {
 	WAITING
 }
 
-@onready var units = $"../Units".get_children()
-@onready var grid = $"../BattleLogic/Grid"
-@onready var event_bus = $"../EventBus"
-
 var player_state = PlayerState.WAITING
 var current_unit: BaseUnit = null
 var current_position := Vector2i.ZERO
 var current_skill: Skill
-
 var target_position := Vector2i.ZERO
 var moved_units := 0
 var unit_amount: int
-var waiting = false
+var waiting := false
 
-var RANGE = 4
+@onready var units = $"../Units".get_children()
+@onready var grid = $"../BattleLogic/Grid"
+@onready var event_bus = $"../EventBus"
 
-var draw_pos = []
-var square_color: Color
-var square_texture = preload("res://graphics/user_interface/grid/pos_indicator.png")
 const MOVEMENT_INDICATOR = preload("res://scenes/user_interface/movement_indicator.tscn")
 
 func _ready():
-	unit_amount = 3
+	unit_amount = units.size()
 
 func _process(_delta):
 	if not waiting and is_mouse_within_grid():
@@ -56,17 +50,9 @@ func handle_player_input():
 		PlayerState.SELECTING_TARGET:
 			player_selecting_target()
 		PlayerState.IDLE:
-			await event_bus.unit_ended_turn
-			player_state = PlayerState.SELECTING_TROOP
-			
-			if moved_units == unit_amount:
-				await get_tree().create_timer(0.5).timeout
-				event_bus.actor_ended_turn.emit()
-				player_state = PlayerState.WAITING
-				moved_units = 0
+			player_idle()
 		PlayerState.WAITING:
-			await event_bus.player_turn_started
-			player_state = PlayerState.SELECTING_TROOP
+			player_waiting()
 
 func player_selecting_troop():
 	if Input.is_action_just_released("Select"):
@@ -82,7 +68,6 @@ func player_selecting_movement():
 	
 	if Input.is_action_just_released("Select"):
 		target_position = grid.get_cell_at_mouse_position()
-		
 		if target_position not in grid.draw_pos:
 			print("Out of range")
 			return
@@ -91,6 +76,7 @@ func player_selecting_movement():
 		player_state = PlayerState.SELECTING_ACTION
 
 func player_selecting_action():
+	# TODO: reuse some of the skills' code for base_attack
 	waiting = true
 	var selected_action = await event_bus.action_selected
 	waiting = false
@@ -111,14 +97,13 @@ func player_selecting_action():
 	if selected_action[0] == "skills":
 		event_bus.unit_selecting_skills.emit(current_unit)
 		player_state = PlayerState.SELECTING_SKILL
-		
+	
 func player_selecting_skill():
 	var skill: Skill = await event_bus.skill_selected
 	current_skill = skill
 	
 	var positions = skill.skill_range(target_position)
 	grid.draw_positions(positions, Color(1, 0, 0, 1))
-	
 	player_state = PlayerState.SELECTING_TARGET
 	
 	waiting = true
@@ -127,10 +112,27 @@ func player_selecting_skill():
 
 func player_selecting_target():
 	if Input.is_action_just_released("Select") and not waiting:
-			player_state = PlayerState.IDLE
-			current_skill.skill_handler(target_position)
-				
-			grid.undraw_positions()
+		player_state = PlayerState.IDLE
+		current_skill.skill_handler(target_position)
+		grid.undraw_positions()
+
+func player_idle():
+	waiting = true
+	await event_bus.unit_ended_turn
+	waiting = false
+	player_state = PlayerState.SELECTING_TROOP
+	
+	if moved_units == unit_amount:
+		await get_tree().create_timer(0.5).timeout
+		event_bus.actor_ended_turn.emit()
+		player_state = PlayerState.WAITING
+		moved_units = 0
+
+func player_waiting():
+	waiting = true
+	await event_bus.player_turn_started
+	waiting = false
+	player_state = PlayerState.SELECTING_TROOP
 
 func move_player():
 	var path = grid.get_movement_path(current_position, target_position)
@@ -149,7 +151,6 @@ func get_unit_at_mouse_position() -> bool:
 		current_position = selected_position
 		current_unit = selected_unit
 		return true
-	
 	return false
 #endregion
 

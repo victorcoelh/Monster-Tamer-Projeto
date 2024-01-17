@@ -1,7 +1,6 @@
 extends Node2D
 
 @onready var attack = $HBoxContainer/VBoxContainer/Attack
-@onready var skills = $HBoxContainer/VBoxContainer/Skills
 @onready var move = $HBoxContainer/VBoxContainer/Move
 @onready var grid = $"../../BattleLogic/Grid"
 @onready var player_unit = $"../../Units/PlayerUnit"
@@ -16,7 +15,6 @@ var attack_range: Array[Vector2i]
 
 func _ready():
 	scale = scale / battle_camera.zoom
-
 
 func set_menu_position(selected_pos):
 	var menu_pos = selected_pos - Vector2i(2,1) 
@@ -51,7 +49,6 @@ func _on_skills_pressed():
 	skills_container.visible = true
 	event_bus.action_selected.emit("skills", [])
 
-
 func _on_event_bus_unit_selecting_skills(unit: BaseUnit):
 	for skill in unit.skills:
 		create_skill_button(skill)
@@ -65,10 +62,7 @@ func create_skill_button(skill: Skill):
 	button.pressed.connect(event)
 	skills_container.add_child(button)
 
-
-
-
-func _on_event_bus_skill_selected(skill):
+func _on_event_bus_skill_selected(_skill):
 	visible = false
 	attack.visible = false
 	skills_container.visible = false

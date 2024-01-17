@@ -13,19 +13,19 @@ var path: Array[Vector2i]
 var moving = false
 var draw_pos = []
 var square_color: Color
+
 var texture = preload("res://graphics/user_interface/grid/pos_indicator.png")
 @onready var units = $"../../Units"
-@onready var base_tile_map = $"../../BaseTileMap"
+@onready var collision_tile_map = $"../../CollisionTileMap"
 
 
 func _ready():
 	initialize_grid()
 	setup_astar()
 	
-	var objects: Array[Vector2i] = base_tile_map.get_obstacles()
+	var objects: Array[Vector2i]
+	objects = collision_tile_map.get_tiles_at_layer(collision_tile_map.TileLayer.UNPASSABLE)
 	add_objects_to_grid(objects, false)
-	
-func _process(_delta):
 	queue_redraw()
 
 func _draw():
@@ -51,8 +51,10 @@ func add_to_grid(object: Object, relative_pos: Vector2i):
 
 func add_objects_to_grid(object_positions: Array[Vector2i], passable: bool):
 	for object: Vector2 in object_positions:
+		# if the object is outside of the grid's bounds, it should not be added.
 		if object.x < 0 or object.y < 0 or object.x >= size.x or object.y >= size.y:
 			continue
+		
 		var new_object := GridObject.new(passable)
 		grid[object.x][object.y] = new_object
 		astar_grid.set_point_solid(object)
@@ -121,17 +123,17 @@ func tiles_in_counted_range(initial_pos: Vector2i, tile_range: int) -> Array[Vec
 	
 	while not frontier.is_empty():
 		var current = frontier.pop_front()
-		var at_limit = distances[current] == tile_range
+		var past_limit = distances[current] > tile_range
 		var not_empty = get_at(current) != null
 		var is_initial = current == initial_pos # initial_pos is a special case
 		
-		if at_limit or not_empty and not is_initial:
+		if past_limit or not_empty and not is_initial:
 			continue
 		
+		output.append(current)
 		for neighbor in get_neighbors(current):
 			if neighbor not in distances:
 				frontier.append(neighbor)
-				output.append(neighbor)
 				distances[neighbor] = distances[current] + 1
 	return output
 
@@ -160,6 +162,7 @@ func draw_grid_lines():
 		var starting_pos = cell_to_global_position(Vector2(i, 0))
 		var end_pos = cell_to_global_position(Vector2(i, size.y))
 		draw_grid_line(starting_pos, end_pos, Color(0, 0, 0, 0.1))
+	
 	for j in range(size.y+1):
 		var starting_pos = cell_to_global_position(Vector2(0, j))
 		var end_pos = cell_to_global_position(Vector2(size.x, j))
@@ -192,9 +195,9 @@ func undraw_positions():
 	queue_redraw()
 
 func draw_move_squares():
-		for pos in draw_pos:
-			var global_pos = cell_to_global_position(pos)
-			draw_texture(texture, global_pos - Vector2(16, 16), square_color)
+	for pos in draw_pos:
+		var global_pos = cell_to_global_position(pos)
+		draw_texture(texture, global_pos - Vector2(16, 16), square_color)
 #endregion
 
 ## Class used to serve as a representation of possible obstacles on the grid,

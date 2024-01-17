@@ -1,9 +1,9 @@
 extends Skill
 class_name BasicAttack
 
-func _init(unit: BaseUnit):
+func _init(parent_unit: BaseUnit):
 	self.skill_name = "Attack"
-	self.unit = unit
+	self.unit = parent_unit
 
 func use_skill(attacker:BaseUnit, target: BaseUnit):
 	var dmg = resolve_damage(attacker, target, 1)
@@ -19,7 +19,7 @@ func skill_range(current_pos: Vector2i) -> Array[Vector2i]:
 	]
 	return positions
 
-func skill_handler(desired_pos:Vector2i):
+func skill_handler(_desired_pos: Vector2i):
 	var selected_position = self.unit.grid.get_cell_at_mouse_position()
 	var selected_unit = self.unit.grid.get_at(selected_position)
 	
