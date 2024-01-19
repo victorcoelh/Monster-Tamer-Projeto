@@ -2,9 +2,9 @@ extends Skill
 
 const WHIRLWIND_ANIM = preload("res://scenes/skills/whirlwind_anim.tscn")
 
-func _init(unit: BaseUnit):
+func _init(parent_unit: BaseUnit):
 	self.skill_name = "Whirlwind"
-	self.unit = unit
+	self.unit = parent_unit
 
 func use_skill(attacker:BaseUnit, target: BaseUnit):
 	var dmg = resolve_damage(attacker, target, 1)

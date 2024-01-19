@@ -49,7 +49,7 @@ func move_unit_to_grid(unit, pos:Vector2i):
 	var unit_global_pos = grid.cell_to_global_position(pos)
 	unit.global_position = unit_global_pos
 
-func set_unit_params(unit:BaseUnit, params: UnitData):
+func set_unit_params(unit: BaseUnit, params: UnitData):
 	unit.unit_name = params.unit_name
 	unit.max_hp = params.max_hp
 	unit.hp = params.max_hp

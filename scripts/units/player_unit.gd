@@ -1,2 +1,2 @@
-extends BaseUnit
 class_name PlayerUnit
+extends BaseUnit
