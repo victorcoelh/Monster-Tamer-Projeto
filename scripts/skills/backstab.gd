@@ -22,7 +22,7 @@ func skill_range(current_pos: Vector2i) -> Array[Vector2i]:
 	]
 	return positions
 
-func skill_handler(desired_pos:Vector2i):
+func skill_handler(desired_pos: Vector2i):
 	var selected_position = self.unit.grid.get_cell_at_mouse_position()
 	var selected_unit = self.unit.grid.get_at(selected_position)
 	
@@ -30,7 +30,12 @@ func skill_handler(desired_pos:Vector2i):
 		print("Out of range")
 		return
 		
-	if selected_unit is BaseUnit:	
+	if selected_unit is BaseUnit:
+		var blink: bool = _should_blink(selected_position, desired_pos)
+		self.create_animation(desired_pos, selected_position, blink)
+		self.unit.event_bus.unit_attacked.emit(self.unit, selected_unit, use_skill)
+
+func _should_blink(selected_position, desired_pos) -> bool:
 		var back_pos: Vector2i = get_back_pos(selected_position, desired_pos)
 		var blink: bool = false
 		
@@ -39,17 +44,15 @@ func skill_handler(desired_pos:Vector2i):
 			self.unit.grid.grid_move(current_pos, back_pos)
 			self.unit.global_position = self.unit.grid.cell_to_global_position(back_pos)
 			blink = true
-		
-		self.create_animation(desired_pos, selected_position, blink)
-		self.unit.event_bus.unit_attacked.emit(self.unit, selected_unit, use_skill)
- 
-func get_back_pos(selected_position: Vector2i, desired_pos:Vector2i) -> Vector2i:
+		return blink
+
+func get_back_pos(selected_position: Vector2i, desired_pos: Vector2i) -> Vector2i:
 	if selected_position.y > desired_pos.y:
-		return selected_position + Vector2i(0,1)
+		return selected_position + Vector2i(0, 1)
 	if selected_position.y < desired_pos.y:
-		return selected_position + Vector2i(0,-1)
+		return selected_position + Vector2i(0, -1)
 	if selected_position.x > desired_pos.x:
-		return selected_position + Vector2i(1,0)
+		return selected_position + Vector2i(1, 0)
 	if selected_position.x < desired_pos.x:
 		return selected_position + Vector2i(-1, 0)
 	
@@ -57,7 +60,7 @@ func get_back_pos(selected_position: Vector2i, desired_pos:Vector2i) -> Vector2i
 
 func create_animation(attacker_pos: Vector2i, target_pos: Vector2i, blink: bool):
 	var direction: SkillDirection = self.skill_direction(attacker_pos, target_pos)
-	
+	var skill_animation = BACKSTAB_ANIM.instantiate()
 	var sprite_rotation: int
 	
 	match direction:
@@ -65,8 +68,6 @@ func create_animation(attacker_pos: Vector2i, target_pos: Vector2i, blink: bool)
 		SkillDirection.EAST: sprite_rotation = 0
 		SkillDirection.NORTH: sprite_rotation = -90
 		SkillDirection.SOUTH: sprite_rotation = 90
-		
-	var skill_animation = BACKSTAB_ANIM.instantiate()
 	
 	if !blink:
 		skill_animation.should_blink = false

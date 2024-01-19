@@ -49,7 +49,7 @@ func resolve_turn():
 
 func _show_turn_indicator(actor: String):
 	var turn_indicator = TURN_INDICATOR.instantiate()
-	turn_indicator.set_actor("PLAYER")
+	turn_indicator.set_actor(actor)
 	add_child(turn_indicator)
 
 func resolve_attack(attack: Callable, target_unit: BaseUnit, attacker: BaseUnit):

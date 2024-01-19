@@ -7,9 +7,9 @@ extends Camera2D
 @export var upper_bounds: Vector2 = Vector2i(25, 20)
 
 var camera_size: Vector2i
-var direction := Vector2.ZERO
+var direction = Vector2.ZERO
 var speed: float = 0
-var elapsed_time := 0
+var elapsed_time: float = 0
 var should_check_mouse := true
 var slowing := false
 
@@ -21,9 +21,6 @@ func _ready():
 	upper_bounds *= grid.cell_size
 
 func _process(delta):
-	if speed > 3:
-		speed = 3
-	
 	if is_mouse_close_to_border() and should_check_mouse:
 		speedup_camera(delta)
 	else:

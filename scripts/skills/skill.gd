@@ -1,5 +1,6 @@
 class_name Skill
 
+
 var unit: BaseUnit
 var skill_name: String
 
@@ -9,6 +10,7 @@ enum SkillDirection {
 	WEST,
 	EAST
 }
+
 
 func _init(_unit: BaseUnit):
 	pass
@@ -25,18 +27,17 @@ func skill_handler(_desired_pos: Vector2i):
 
 func skill_direction(attacker_pos: Vector2i, selected_pos: Vector2i):
 	var WEST = attacker_pos.x > selected_pos.x
+	var EAST = attacker_pos.x < selected_pos.x
+	var NORTH = attacker_pos.y > selected_pos.y
+	
 	if WEST:
 		return SkillDirection.WEST
-		
-	var EAST = attacker_pos.x < selected_pos.x
-	if EAST:
+	elif EAST:
 		return SkillDirection.EAST
-	
-	var NORTH = attacker_pos.y > selected_pos.y
-	if NORTH:
+	elif NORTH:
 		return SkillDirection.NORTH
-	
-	return SkillDirection.SOUTH
+	else:
+		return SkillDirection.SOUTH
 
 func resolve_damage(attacker: BaseUnit, target: BaseUnit, modifier: float):
 	var base_dmg = attacker.get_weapon_damage() * modifier
