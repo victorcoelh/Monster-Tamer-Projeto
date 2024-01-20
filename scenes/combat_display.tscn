@@ -1,0 +1,190 @@
+[gd_scene load_steps=10 format=3 uid="uid://bjwg8ssc7qpkt"]
+
+[ext_resource type="FontFile" uid="uid://c6eto2yrtv7nj" path="res://fonts/m5x7.ttf" id="1_x1aop"]
+[ext_resource type="Script" path="res://scripts/combat_display.gd" id="1_ysjhe"]
+[ext_resource type="Texture2D" uid="uid://cnbe7gu2mvw74" path="res://graphics/UI/big_hp_bar_bg.png" id="2_73bab"]
+[ext_resource type="Texture2D" uid="uid://bihaflrfjncm2" path="res://graphics/big_box_top.png" id="2_ljey0"]
+[ext_resource type="Texture2D" uid="uid://c8fcvma2oj5op" path="res://graphics/UI/big_hp_bar_over.png" id="3_fi4is"]
+[ext_resource type="Texture2D" uid="uid://di4r7xsh5r5dn" path="res://graphics/big_box_bottom.png" id="3_tmabh"]
+[ext_resource type="Texture2D" uid="uid://bvoisgm5tdx0c" path="res://graphics/UI/big_hp_bar_progress.png" id="4_eajq7"]
+[ext_resource type="Texture2D" uid="uid://g406jgdi7ojs" path="res://graphics/UI/attr_box_top.png" id="5_8fhc3"]
+[ext_resource type="Texture2D" uid="uid://5eq316ewj3r5" path="res://graphics/UI/attr_box_bottom.png" id="6_cqgpb"]
+
+[node name="CombatDisplay" type="CanvasLayer"]
+scale = Vector2(2.5, 2.5)
+transform = Transform2D(2.5, 0, 0, 2.5, 0, 0)
+script = ExtResource("1_ysjhe")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchor_top = 0.3
+anchor_bottom = 0.3
+offset_left = 4.0
+offset_top = 0.800003
+offset_right = 44.0
+offset_bottom = 40.8
+
+[node name="BigBox" type="Node2D" parent="Control"]
+position = Vector2(67.6, 10.8)
+
+[node name="Top" type="Sprite2D" parent="Control/BigBox"]
+texture = ExtResource("2_ljey0")
+
+[node name="Bottom" type="Sprite2D" parent="Control/BigBox"]
+texture = ExtResource("3_tmabh")
+
+[node name="UnitName" type="Label" parent="Control/BigBox"]
+self_modulate = Color(0, 0, 0, 1)
+offset_left = -42.8
+offset_top = -14.8
+offset_right = 44.2
+offset_bottom = -0.799973
+theme_override_fonts/font = ExtResource("1_x1aop")
+theme_override_font_sizes/font_size = 16
+text = "Endrick"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="HealthBar" type="TextureProgressBar" parent="Control/BigBox"]
+offset_left = -42.6
+offset_top = 3.20003
+offset_right = 44.4
+offset_bottom = 11.2
+value = 50.0
+texture_under = ExtResource("2_73bab")
+texture_over = ExtResource("3_fi4is")
+texture_progress = ExtResource("4_eajq7")
+texture_progress_offset = Vector2(5, 2)
+
+[node name="AttributeBox" type="HBoxContainer" parent="Control"]
+offset_left = -20.0
+offset_top = 0.4
+offset_right = 21.0
+offset_bottom = 43.4
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="DMGBox" type="VBoxContainer" parent="Control/AttributeBox"]
+layout_mode = 2
+
+[node name="Top" type="Sprite2D" parent="Control/AttributeBox/DMGBox"]
+position = Vector2(31.6, 37.2001)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_8fhc3")
+
+[node name="Bottom" type="Sprite2D" parent="Control/AttributeBox/DMGBox"]
+position = Vector2(31.6, 37.2)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_cqgpb")
+
+[node name="HITBox" type="VBoxContainer" parent="Control/AttributeBox"]
+layout_mode = 2
+
+[node name="Top" type="Sprite2D" parent="Control/AttributeBox/HITBox"]
+position = Vector2(68, 37.2)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_8fhc3")
+
+[node name="Bottom" type="Sprite2D" parent="Control/AttributeBox/HITBox"]
+position = Vector2(68, 37.2)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_cqgpb")
+
+[node name="CRITBox" type="VBoxContainer" parent="Control/AttributeBox"]
+layout_mode = 2
+
+[node name="Top" type="Sprite2D" parent="Control/AttributeBox/CRITBox"]
+position = Vector2(104.4, 37.2)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_8fhc3")
+
+[node name="Bottom" type="Sprite2D" parent="Control/AttributeBox/CRITBox"]
+position = Vector2(104.4, 37.2)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_cqgpb")
+
+[node name="DMGText" type="Control" parent="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.6, 0.6)
+
+[node name="DMGLabel" type="Label" parent="Control/DMGText"]
+layout_mode = 0
+offset_left = 42.6667
+offset_top = 49.3333
+offset_right = 62.6667
+offset_bottom = 62.3333
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_x1aop")
+text = "DMG"
+
+[node name="DMGCount" type="Label" parent="Control/DMGText"]
+layout_mode = 0
+offset_left = 46.6667
+offset_top = 60.0
+offset_right = 58.6667
+offset_bottom = 73.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_x1aop")
+text = "99
+"
+
+[node name="HITText" type="Control" parent="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.6, 0.6)
+
+[node name="HITLabel" type="Label" parent="Control/HITText"]
+layout_mode = 0
+offset_left = 105.0
+offset_top = 49.0
+offset_right = 125.0
+offset_bottom = 62.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_x1aop")
+text = "HIT"
+
+[node name="HITCount" type="Label" parent="Control/HITText"]
+layout_mode = 0
+offset_left = 168.0
+offset_top = 60.0
+offset_right = 180.0
+offset_bottom = 73.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_x1aop")
+theme_override_font_sizes/font_size = 16
+text = "99
+"
+
+[node name="CRITText" type="Control" parent="Control"]
+layout_mode = 3
+anchors_preset = 0
+scale = Vector2(0.6, 0.6)
+
+[node name="CRITLabel" type="Label" parent="Control/CRITText"]
+layout_mode = 0
+offset_left = 162.0
+offset_top = 48.6667
+offset_right = 186.0
+offset_bottom = 61.6667
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_x1aop")
+theme_override_font_sizes/font_size = 16
+text = "CRIT"
+
+[node name="CRITCount" type="Label" parent="Control/CRITText"]
+layout_mode = 0
+offset_left = 107.666
+offset_top = 60.0
+offset_right = 119.666
+offset_bottom = 73.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("1_x1aop")
+theme_override_font_sizes/font_size = 16
+text = "99
+"

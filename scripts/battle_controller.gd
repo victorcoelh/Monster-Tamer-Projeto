@@ -30,7 +30,7 @@ func _ready():
 	turn_queue.append(Actor.ENEMY)
 	await get_tree().create_timer(1.0).timeout
 	waiting_turn_end = false
-
+			
 func _process(_delta):
 	if not waiting_turn_end:
 		resolve_turn()

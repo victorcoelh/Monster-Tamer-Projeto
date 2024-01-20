@@ -14,6 +14,7 @@ var wind_slash = preload("res://scripts/wind_slash.gd")
 var whirlwind = preload("res://scripts/whirlwind.gd")
 var backstab = preload("res://scripts/backstab.gd")
 
+
 enum UnitType {
 	PLAYER,
 	ENEMY
@@ -28,9 +29,9 @@ func _ready():
 									[wind_slash, whirlwind, backstab])
 	
 	instantiate_unit(yuri_alberto_data, UnitType.ENEMY, Vector2i(6,5))
-	instantiate_unit(endrick_data,UnitType.ENEMY, Vector2i(5,5))
+	# instantiate_unit(endrick_data,UnitType.ENEMY, Vector2i(5,5))
 	instantiate_unit(yuri_alberto_data, UnitType.PLAYER, Vector2i(6,6))
-
+	
 func instantiate_unit(unit_params:UnitData, unit_type: UnitType, pos: Vector2i):
 	var unit = get_unit_type(unit_type).instantiate()
 	units.add_child(unit)

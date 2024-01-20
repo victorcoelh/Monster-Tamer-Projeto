@@ -13,16 +13,14 @@ var font = load("res://fonts/m5x7.ttf")
 
 var attack_range: Array[Vector2i]
 
-
 func _ready():
 	scale = scale / battle_camera.zoom
-
-
+	
 func set_menu_position(selected_pos):
 	var menu_pos = selected_pos - Vector2i(2,1) 
 	menu_pos = grid.cell_to_global_position(menu_pos)
 	global_position = menu_pos
-
+	
 func set_buttons_visibility(selected_pos):
 	attack_range = player_unit.basic_attack.skill_range(selected_pos)
 	var enemies_in_range: Array[EnemyUnit] = grid.enemies_in_range(attack_range)

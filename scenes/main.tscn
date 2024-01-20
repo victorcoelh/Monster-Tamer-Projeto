@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bxrvjw02uooh6"]
+[gd_scene load_steps=15 format=3 uid="uid://bxrvjw02uooh6"]
 
 [ext_resource type="Script" path="res://scripts/battle_camera.gd" id="1_yyg60"]
 [ext_resource type="Script" path="res://scripts/grid.gd" id="2_848uk"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://scripts/unit_initializer.gd" id="9_4aop7"]
 [ext_resource type="Script" path="res://scripts/player_controller.gd" id="9_gu3ug"]
 [ext_resource type="Script" path="res://scripts/enemy_controller.gd" id="9_mi2tb"]
+[ext_resource type="Script" path="res://test.gd" id="12_1ujjm"]
 [ext_resource type="PackedScene" uid="uid://cb5flhrouevwa" path="res://scenes/unit_overview.tscn" id="12_pd8h1"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_k7hv1"]
@@ -249,8 +250,6 @@ script = ExtResource("9_mi2tb")
 
 [node name="Units" type="Node2D" parent="."]
 
-[node name="SkillAnimation" type="Node2D" parent="."]
-
 [node name="UserInterface" type="Node2D" parent="."]
 
 [node name="BattleSelectionMenu" parent="UserInterface" instance=ExtResource("8_k0pav")]
@@ -258,6 +257,9 @@ visible = false
 
 [node name="UnitOverview" parent="UserInterface" instance=ExtResource("12_pd8h1")]
 visible = false
+
+[node name="Test" type="Node2D" parent="."]
+script = ExtResource("12_1ujjm")
 
 [connection signal="actor_ended_turn" from="EventBus" to="BattleLogic/BattleController" method="_on_event_bus_actor_ended_turn"]
 [connection signal="enemy_turn_started" from="EventBus" to="EnemyController" method="_on_event_bus_enemy_turn_started"]
