@@ -55,6 +55,7 @@ func _process(_delta):
 
 func follow_path(path: Array[Vector2i]):
 	current_path = path
+	animation_player.play("walking")
 
 #region Secondary Stats
 func get_crit_rate() -> float:
@@ -77,12 +78,13 @@ func turn_inactive():
 	sprite_2d.material = shader_material
 	
 	inactive = true
+	animation_player.play("idle")
 	animation_player.stop()
 
 func awake():
 	sprite_2d.material = null
 	inactive = false
-	animation_player.play("walking")
+	animation_player.play("idle")
 
 func _on_event_bus_actor_turn_ended():
 	awake()

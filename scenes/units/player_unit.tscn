@@ -1,16 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://brlvyppc05m5c"]
+[gd_scene load_steps=3 format=3 uid="uid://brlvyppc05m5c"]
 
 [ext_resource type="PackedScene" uid="uid://cbllbd0aj3dpc" path="res://scenes/units/unit.tscn" id="1_k4gy4"]
 [ext_resource type="Script" path="res://scripts/units/player_unit.gd" id="2_q1kwg"]
-[ext_resource type="Texture2D" uid="uid://d28leod0vhgu1" path="res://graphics/monsters/Endrick.png" id="3_kkf0q"]
 
 [node name="PlayerUnit" instance=ExtResource("1_k4gy4")]
 script = ExtResource("2_q1kwg")
-
-[node name="Sprite2D" parent="." index="0"]
-scale = Vector2(0.4, 0.4)
-texture = ExtResource("3_kkf0q")
-hframes = 5
 
 [node name="HealthBar" parent="." index="2"]
 max_value = 100.0

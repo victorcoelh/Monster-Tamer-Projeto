@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://012uiyqppwx4"
-path="res://.godot/imported/Vocorvo.png-d6078875a62aa862909b087e2054f5f6.ctex"
+uid="uid://bu46h3vt6plk4"
+path="res://.godot/imported/vocorvo.png-b9489498d2cfe9452b145bed4e81ea70.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://graphics/monsters/Vocorvo.png"
-dest_files=["res://.godot/imported/Vocorvo.png-d6078875a62aa862909b087e2054f5f6.ctex"]
+source_file="res://graphics/monsters/vocorvo.png"
+dest_files=["res://.godot/imported/vocorvo.png-b9489498d2cfe9452b145bed4e81ea70.ctex"]
 
 [params]
 
