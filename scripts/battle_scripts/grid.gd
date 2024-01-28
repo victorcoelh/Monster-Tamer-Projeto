@@ -30,7 +30,7 @@ func _ready():
 
 func _draw():
 	draw_grid_lines()
-	draw_debug_points()
+	#draw_debug_points()
 	draw_move_squares()
 
 #region Grid Control

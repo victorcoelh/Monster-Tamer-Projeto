@@ -19,6 +19,8 @@ config/icon="res://graphics/godot.svg"
 
 window/size/viewport_width=1360
 window/size/viewport_height=768
+window/stretch/aspect="expand"
+window/quality/use_taa=true
 
 [input]
 
@@ -41,4 +43,3 @@ Cancel={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-renderer/rendering_method="mobile"

@@ -35,6 +35,9 @@ var movement := 5
 var basic_attack = BasicAttack.new(self)
 var skills: Array[Skill] = []
 
+# game parameters
+const UNIT_MOVE_SPEED = 100
+
 func _ready():
 	event_bus.actor_ended_turn.connect(_on_event_bus_actor_turn_ended)
 
@@ -43,7 +46,7 @@ func _process(_delta):
 		return
 		
 	var target_position = grid.cell_to_global_position(current_path.front())
-	global_position = global_position.move_toward(target_position, 2)
+	global_position = global_position.move_toward(target_position, _delta * UNIT_MOVE_SPEED)
 	
 	if global_position == target_position:
 		current_path.pop_front()
@@ -56,6 +59,9 @@ func _process(_delta):
 func follow_path(path: Array[Vector2i]):
 	current_path = path
 	animation_player.play("walking")
+	
+	if current_path[-1].x < current_path[0].x: # going left
+		sprite_2d.flip_h = true
 
 #region Secondary Stats
 func get_crit_rate() -> float:
@@ -76,6 +82,7 @@ func turn_inactive():
 	var shader_material = ShaderMaterial.new()
 	shader_material.shader = UNIT_GRAYSCALE
 	sprite_2d.material = shader_material
+	sprite_2d.flip_h = false
 	
 	inactive = true
 	animation_player.play("idle")

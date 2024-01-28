@@ -1,82 +1,29 @@
-[gd_scene load_steps=11 format=3 uid="uid://cbllbd0aj3dpc"]
+[gd_scene load_steps=9 format=3 uid="uid://cbllbd0aj3dpc"]
 
 [ext_resource type="Script" path="res://scripts/units/unit.gd" id="1_aw5nr"]
-[ext_resource type="Texture2D" uid="uid://2fvek4726xuy" path="res://graphics/monsters/endrick.png" id="2_3e3qj"]
+[ext_resource type="Shader" path="res://graphics/shaders/inline_outline.gdshader" id="2_fliqc"]
+[ext_resource type="Texture2D" uid="uid://bhbc34nxvgcfc" path="res://graphics/debug.jpeg" id="2_y5lvh"]
 [ext_resource type="Texture2D" uid="uid://c4d143g0vy1qf" path="res://graphics/user_interface/unit_health_bar_bg.png" id="3_5fmqv"]
 [ext_resource type="Texture2D" uid="uid://48j0jufih6cy" path="res://graphics/user_interface/unit_health_bar_over.png" id="4_rpp2x"]
 [ext_resource type="Texture2D" uid="uid://bcwc24vsbepds" path="res://graphics/user_interface/unit_health_bar_prog.png" id="5_n624r"]
 [ext_resource type="Script" path="res://scripts/user_interface/health_bar.gd" id="6_prl25"]
 
-[sub_resource type="Animation" id="Animation_gquep"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-
-[sub_resource type="Animation" id="Animation_jfgj0"]
-length = 2.0
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-}
-
-[sub_resource type="Animation" id="Animation_fkasl"]
-resource_name = "walking"
-length = 0.7
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [14, 15, 16, 17, 18, 19, 20]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_8onki"]
-_data = {
-"RESET": SubResource("Animation_gquep"),
-"idle": SubResource("Animation_jfgj0"),
-"walking": SubResource("Animation_fkasl")
-}
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nn6s1"]
+shader = ExtResource("2_fliqc")
+shader_parameter/color = Vector4(0, 0, 0, 1)
+shader_parameter/width = 0.7
+shader_parameter/pattern = 0
+shader_parameter/inside = true
+shader_parameter/add_margins = true
 
 [node name="Unit" type="Node2D" groups=["Unit"]]
 script = ExtResource("1_aw5nr")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
+material = SubResource("ShaderMaterial_nn6s1")
 position = Vector2(0, -13)
-texture = ExtResource("2_3e3qj")
-hframes = 14
-vframes = 2
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_8onki")
-}
-autoplay = "idle"
+texture = ExtResource("2_y5lvh")
 
 [node name="HealthBar" type="TextureProgressBar" parent="."]
 offset_left = -16.0
@@ -92,3 +39,5 @@ texture_progress = ExtResource("5_n624r")
 texture_progress_offset = Vector2(6, 15)
 script = ExtResource("6_prl25")
 metadata/_edit_use_anchors_ = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
