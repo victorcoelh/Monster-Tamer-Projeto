@@ -1,0 +1,58 @@
+[gd_scene load_steps=6 format=3 uid="uid://ctkjikahbqpw4"]
+
+[ext_resource type="Script" path="res://scripts/user_interface/terrain_indicator.gd" id="1_8hbnq"]
+[ext_resource type="Texture2D" uid="uid://bnsex2hmflew0" path="res://graphics/user_interface/terrain_indicator_bg.png" id="1_m6i3i"]
+[ext_resource type="FontFile" uid="uid://c6eto2yrtv7nj" path="res://fonts/m5x7.ttf" id="2_qgl5x"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_jha8q"]
+font = ExtResource("2_qgl5x")
+font_size = 48
+font_color = Color(0, 0, 0, 1)
+shadow_size = 2
+shadow_color = Color(0, 0, 0, 0.196078)
+
+[sub_resource type="LabelSettings" id="LabelSettings_tq471"]
+font = ExtResource("2_qgl5x")
+font_size = 48
+font_color = Color(0, 0, 0, 1)
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 0.141176)
+
+[node name="TerrainIndicator" type="CanvasLayer"]
+script = ExtResource("1_8hbnq")
+
+[node name="Container" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="Background" type="Sprite2D" parent="Container"]
+position = Vector2(-73, 78)
+scale = Vector2(4, 4)
+texture = ExtResource("1_m6i3i")
+
+[node name="TerrainLabel" type="Label" parent="Container"]
+layout_mode = 2
+offset_left = -123.0
+offset_top = 27.0
+offset_right = -21.0
+offset_bottom = 65.0
+text = "Forest"
+label_settings = SubResource("LabelSettings_jha8q")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EffectLabel" type="Label" parent="Container"]
+layout_mode = 0
+offset_left = -145.0
+offset_top = 82.0
+offset_right = -4.0
+offset_bottom = 120.0
+text = "+10% AVO"
+label_settings = SubResource("LabelSettings_tq471")
+horizontal_alignment = 1
+vertical_alignment = 1

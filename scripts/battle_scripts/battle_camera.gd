@@ -1,7 +1,7 @@
 extends Camera2D
 
 
-@export var min_mouse_distance: int = 200
+@export var min_mouse_distance: int = 300
 @export var max_speed: float = 3
 @export var acceleration: float = 0.2
 @export var lower_bounds: Vector2 = Vector2i(-3, -3)
