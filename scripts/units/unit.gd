@@ -68,7 +68,12 @@ func get_crit_rate() -> float:
 	return BASE_CRIT + perception/100.0
 
 func get_avoid_rate() -> float:
-	return speed/100.0 # DO NOT delete the .0, as Godot will turn this into an integer division
+	var avoid_rate = speed/100.0 # DO NOT delete the .0, as Godot will turn this into an integer division
+	var grid_pos = grid.global_to_cell_position(global_position)
+	
+	if grid.terrain_manager.get_at(grid_pos) == grid.collision_tile_map.TileLayer.FOREST:
+		avoid_rate *= 1.1
+	return avoid_rate 
 
 func get_hit_rate() -> float:
 	return 0.8 + perception/50.0

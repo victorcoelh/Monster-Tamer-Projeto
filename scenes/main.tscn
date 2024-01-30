@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bxrvjw02uooh6"]
+[gd_scene load_steps=20 format=3 uid="uid://bxrvjw02uooh6"]
 
 [ext_resource type="Script" path="res://scripts/battle_scripts/battle_camera.gd" id="1_yyg60"]
 [ext_resource type="Script" path="res://scripts/battle_scripts/grid.gd" id="2_848uk"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://scripts/battle_scripts/controllers/player_controller.gd" id="9_gu3ug"]
 [ext_resource type="Script" path="res://scripts/battle_scripts/controllers/enemy_controller.gd" id="9_mi2tb"]
 [ext_resource type="PackedScene" uid="uid://cb5flhrouevwa" path="res://scenes/user_interface/unit_overview.tscn" id="12_pd8h1"]
+[ext_resource type="PackedScene" uid="uid://ctkjikahbqpw4" path="res://scenes/user_interface/terrain_indicator.tscn" id="14_0006y"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jj4td"]
 shader = ExtResource("2_e0hea")
@@ -325,6 +326,8 @@ visible = false
 
 [node name="UnitOverview" parent="UserInterface" instance=ExtResource("12_pd8h1")]
 visible = false
+
+[node name="TerrainIndicator" parent="UserInterface" instance=ExtResource("14_0006y")]
 
 [connection signal="actor_ended_turn" from="EventBus" to="BattleLogic/BattleController" method="_on_event_bus_actor_ended_turn"]
 [connection signal="enemy_turn_started" from="EventBus" to="EnemyController" method="_on_event_bus_enemy_turn_started"]

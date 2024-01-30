@@ -12,6 +12,7 @@ var selected_unit
 var path: Array[Vector2i]
 var moving = false
 var draw_pos = []
+var terrain_manager: TerrainManager = TerrainManager.new()
 var square_color: Color
 
 var texture = preload("res://graphics/user_interface/grid/pos_indicator.png")
@@ -23,9 +24,14 @@ func _ready():
 	initialize_grid()
 	setup_astar()
 	
-	var objects: Array[Vector2i]
-	objects = collision_tile_map.get_tiles_at_layer(collision_tile_map.TileLayer.UNPASSABLE)
-	add_objects_to_grid(objects, false)
+	var obstacles: Array[Vector2i]
+	obstacles = collision_tile_map.get_tiles_at_layer(collision_tile_map.TileLayer.UNPASSABLE)
+	add_objects_to_grid(obstacles, false)
+	
+	var forest_tiles: Array[Vector2i]
+	forest_tiles = collision_tile_map.get_tiles_at_layer(collision_tile_map.TileLayer.FOREST)
+	terrain_manager.add_list_of_type(forest_tiles, collision_tile_map.TileLayer.FOREST)
+	print(terrain_manager._terrain_positions)
 	queue_redraw()
 
 func _draw():
@@ -179,6 +185,9 @@ func draw_debug_points():
 			if grid[i][j] is GridObject:
 				draw_point(global_pos.x, global_pos.y, Color.YELLOW)
 				continue
+			
+			if terrain_manager.get_at(Vector2i(i, j)) != null:
+				draw_point(global_pos.x, global_pos.y, Color.BLUE_VIOLET)
 
 func draw_point(x: float, y: float, color):
 	draw_rect(Rect2(x-4,y-4,8,8), color)
@@ -208,3 +217,18 @@ class GridObject:
 	
 	func _init(is_passable):
 		self.passable = is_passable
+
+class TerrainManager:
+	var _terrain_positions: Dictionary
+	
+	func _init():
+		self._terrain_positions = {}
+	
+	func add_list_of_type(terrains: Array[Vector2i], type):
+		for position in terrains:
+			self._terrain_positions[position] = type
+	
+	func get_at(position: Vector2i):
+		if position in self._terrain_positions:
+			return self._terrain_positions[position]
+		else: return null
